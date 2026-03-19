@@ -647,6 +647,7 @@
               <th>상태</th>
               <th>청크</th>
               <th>노드/엣지</th>
+              <th>보안 등급</th>
               <th>작성자</th>
               <th>등록일</th>
             </tr>
@@ -660,6 +661,7 @@
               <td><span class="doc-status complete">&#10003; 완료</span></td>
               <td>24</td>
               <td>47 / 68</td>
+              <td><span class="badge badge-info">일반</span></td>
               <td>박QA팀장</td>
               <td style="color:#888;">2026-03-01</td>
             </tr>
@@ -671,6 +673,7 @@
               <td><span class="doc-status complete">&#10003; 완료</span></td>
               <td>18</td>
               <td>32 / 45</td>
+              <td><span class="badge" style="background:#f59e0b22;color:#f59e0b;border:1px solid #f59e0b44;">대외비</span></td>
               <td>이품질</td>
               <td style="color:#888;">2026-02-28</td>
             </tr>
@@ -682,6 +685,7 @@
               <td><span class="doc-status parsing">&#9654; 파싱 중</span></td>
               <td>-</td>
               <td>- / -</td>
+              <td><span class="badge badge-info">일반</span></td>
               <td>김관리</td>
               <td style="color:#888;">2026-03-15</td>
             </tr>
@@ -693,6 +697,7 @@
               <td><span class="doc-status review">&#9888; 검수 필요</span></td>
               <td>15</td>
               <td>- / -</td>
+              <td><span class="badge" style="background:#ef444422;color:#ef4444;border:1px solid #ef444444;">기밀</span></td>
               <td>정설비</td>
               <td style="color:#888;">2026-03-14</td>
             </tr>
@@ -704,6 +709,7 @@
               <td><span class="doc-status error">&#10007; 오류</span></td>
               <td>-</td>
               <td>- / -</td>
+              <td><span class="badge badge-info">일반</span></td>
               <td>한검사</td>
               <td style="color:#888;">2026-03-13</td>
             </tr>
@@ -715,6 +721,7 @@
               <td><span class="doc-status uploaded">&#8593; 업로드됨</span></td>
               <td>-</td>
               <td>- / -</td>
+              <td><span class="badge" style="background:#f59e0b22;color:#f59e0b;border:1px solid #f59e0b44;">대외비</span></td>
               <td>최사출</td>
               <td style="color:#888;">2026-03-16</td>
             </tr>
@@ -726,6 +733,7 @@
               <td><span class="doc-status complete">&#10003; 완료</span></td>
               <td>9</td>
               <td>18 / 22</td>
+              <td><span class="badge badge-info">일반</span></td>
               <td>박QA팀장</td>
               <td style="color:#888;">2026-03-12</td>
             </tr>
@@ -1201,6 +1209,30 @@
   <!-- ===== Tab 2: 온톨로지 관리 (C-01~05) ===== -->
   <div class="sub-screen" id="graph-tab-ontology">
 
+    <!-- C-02: 엔티티/관계 추출 현황 (대시보드) -->
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-header"><span class="wbs-ref">C-02</span> 엔티티/관계 추출 현황</div>
+      <div class="card-body">
+        <div class="grid-3" style="gap:8px;margin-bottom:12px;">
+          <div style="text-align:center;">
+            <div style="font-size:22px;font-weight:700;color:#fff;">1,284</div>
+            <div style="font-size:10px;color:#888;">추출 엔티티</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:22px;font-weight:700;color:#fff;">2,031</div>
+            <div style="font-size:10px;color:#888;">추출 관계</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:22px;font-weight:700;color:#4ade80;">0.87</div>
+            <div style="font-size:10px;color:#888;">평균 신뢰도</div>
+          </div>
+        </div>
+        <div class="detail-row"><span class="dl">마지막 추출</span><span class="dv">2026-03-16 09:30</span></div>
+        <div class="detail-row"><span class="dl">처리 문서</span><span class="dv">127건 중 118건 완료</span></div>
+        <div class="detail-row"><span class="dl">추출 모델</span><span class="dv">GPT-4o (프롬프트 v3.2)</span></div>
+      </div>
+    </div>
+
     <!-- C-01: 온톨로지 정의 -->
     <div class="card">
       <div class="card-header"><span class="wbs-ref">C-01</span> 온톨로지 정의 &mdash; 엔티티/관계 스키마</div>
@@ -1239,127 +1271,6 @@
       </div>
     </div>
 
-    <div class="grid-2" style="margin-bottom:12px;">
-      <!-- C-02: 엔티티/관계 추출 현황 -->
-      <div class="card">
-        <div class="card-header"><span class="wbs-ref">C-02</span> 엔티티/관계 추출 현황</div>
-        <div class="card-body">
-          <div class="grid-3" style="gap:8px;margin-bottom:12px;">
-            <div style="text-align:center;">
-              <div style="font-size:22px;font-weight:700;color:#fff;">1,284</div>
-              <div style="font-size:10px;color:#888;">추출 엔티티</div>
-            </div>
-            <div style="text-align:center;">
-              <div style="font-size:22px;font-weight:700;color:#fff;">2,031</div>
-              <div style="font-size:10px;color:#888;">추출 관계</div>
-            </div>
-            <div style="text-align:center;">
-              <div style="font-size:22px;font-weight:700;color:#4ade80;">0.87</div>
-              <div style="font-size:10px;color:#888;">평균 신뢰도</div>
-            </div>
-          </div>
-          <div class="detail-row"><span class="dl">마지막 추출</span><span class="dv">2026-03-16 09:30</span></div>
-          <div class="detail-row"><span class="dl">처리 문서</span><span class="dv">127건 중 118건 완료</span></div>
-          <div class="detail-row"><span class="dl">추출 모델</span><span class="dv">GPT-4o (프롬프트 v3.2)</span></div>
-          <div class="btn-group" style="margin-top:8px;">
-            <button class="btn btn-primary btn-sm">추출 실행</button>
-            <button class="btn btn-outline btn-sm">프롬프트 설정</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- C-03: 실체 연결 (Resolution) -->
-      <div class="card">
-        <div class="card-header"><span class="wbs-ref">C-03</span> 실체 연결 (Entity Resolution)</div>
-        <div class="card-body">
-          <div style="font-size:11px;color:#888;margin-bottom:8px;">동의어, 약어, 코드명 등 동일 대상을 하나의 노드로 통합합니다</div>
-          <div class="form-label">병합 후보 (자동 감지)</div>
-          <div class="conn-item">
-            <span style="font-size:11px;">"인쇄기" = "프린터" = "PRN-01"</span>
-            <div class="btn-group"><button class="btn btn-success btn-sm">병합</button><button class="btn btn-ghost btn-sm">무시</button></div>
-          </div>
-          <div class="conn-item">
-            <span style="font-size:11px;">"SOP" = "표준작업절차서" = "작업표준서"</span>
-            <div class="btn-group"><button class="btn btn-success btn-sm">병합</button><button class="btn btn-ghost btn-sm">무시</button></div>
-          </div>
-          <div class="conn-item">
-            <span style="font-size:11px;">"QA팀" = "품질보증팀" = "품질관리팀"</span>
-            <div class="btn-group"><button class="btn btn-success btn-sm">병합</button><button class="btn btn-ghost btn-sm">무시</button></div>
-          </div>
-          <div class="conn-item">
-            <span style="font-size:11px;">"잉크점도" = "INK Viscosity" = "점도"</span>
-            <div class="btn-group"><button class="btn btn-success btn-sm">병합</button><button class="btn btn-ghost btn-sm">무시</button></div>
-          </div>
-          <div style="margin-top:8px;">
-            <div class="detail-row"><span class="dl">병합 완료</span><span class="dv" style="color:#4ade80;">23쌍</span></div>
-            <div class="detail-row"><span class="dl">미처리</span><span class="dv" style="color:#fbbf24;">4쌍</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <!-- C-04: 커뮤니티 감지 -->
-      <div class="card">
-        <div class="card-header"><span class="wbs-ref">C-04</span> 커뮤니티 감지 (Topic Clusters)</div>
-        <div class="card-body">
-          <div style="font-size:11px;color:#888;margin-bottom:10px;">연관도가 높은 노드 그룹을 자동으로 식별하여 상위 주제를 파악합니다</div>
-          <table class="data-table">
-            <thead><tr><th>클러스터</th><th>주요 노드</th><th>노드 수</th><th>밀도</th></tr></thead>
-            <tbody>
-              <tr>
-                <td><span class="tag tag-green">인쇄공정</span></td>
-                <td style="font-size:10px;color:#888;">프린터헤드, 잉크, 인쇄불량, 롤러...</td>
-                <td style="font-weight:500;">218</td>
-                <td style="color:#4ade80;">0.78</td>
-              </tr>
-              <tr>
-                <td><span class="tag tag-purple">원자재관리</span></td>
-                <td style="font-size:10px;color:#888;">잉크, 용제, 입고검사, 보관조건...</td>
-                <td style="font-weight:500;">156</td>
-                <td style="color:#4ade80;">0.72</td>
-              </tr>
-              <tr>
-                <td><span class="tag tag-yellow">품질검사</span></td>
-                <td style="font-size:10px;color:#888;">검사기준, 판정규격, 합격률...</td>
-                <td style="font-weight:500;">134</td>
-                <td>0.65</td>
-              </tr>
-              <tr>
-                <td><span class="tag tag-blue">설비관리</span></td>
-                <td style="font-size:10px;color:#888;">설비점검, 예방정비, 가동률...</td>
-                <td style="font-weight:500;">98</td>
-                <td>0.61</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="btn-group" style="margin-top:8px;">
-            <button class="btn btn-outline btn-sm">재분석</button>
-            <button class="btn btn-outline btn-sm">클러스터 상세</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- C-05: 요약 및 설명 생성 -->
-      <div class="card">
-        <div class="card-header"><span class="wbs-ref">C-05</span> 요약 및 설명 생성</div>
-        <div class="card-body">
-          <div style="font-size:11px;color:#888;margin-bottom:10px;">노드, 엣지, 커뮤니티에 대한 자연어 설명을 생성하고 벡터화하여 저장합니다</div>
-          <div class="detail-row"><span class="dl">노드 설명 생성</span><span class="dv">1,198 / 1,284 <span style="color:#4ade80;">(93.3%)</span></span></div>
-          <div class="progress-bar" style="margin-bottom:8px;"><div class="progress-fill green" style="width:93.3%;"></div></div>
-          <div class="detail-row"><span class="dl">엣지 설명 생성</span><span class="dv">1,847 / 2,031 <span style="color:#4ade80;">(90.9%)</span></span></div>
-          <div class="progress-bar" style="margin-bottom:8px;"><div class="progress-fill green" style="width:90.9%;"></div></div>
-          <div class="detail-row"><span class="dl">커뮤니티 요약</span><span class="dv">4 / 4 <span style="color:#4ade80;">(100%)</span></span></div>
-          <div class="progress-bar" style="margin-bottom:8px;"><div class="progress-fill green" style="width:100%;"></div></div>
-          <div class="detail-row"><span class="dl">벡터화 (임베딩)</span><span class="dv" style="color:#4ade80;">완료</span></div>
-          <div class="detail-row"><span class="dl">마지막 갱신</span><span class="dv">2026-03-16 08:15</span></div>
-          <div class="btn-group" style="margin-top:8px;">
-            <button class="btn btn-primary btn-sm">미완료 생성</button>
-            <button class="btn btn-outline btn-sm">전체 재생성</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- ===== Tab 3: 사전/매핑 (M-04) ===== -->
@@ -1666,15 +1577,21 @@
       <div class="flex-1 flex-col" style="min-width:0;">
         <div class="card" style="flex:1;display:flex;flex-direction:column;margin-bottom:0;">
           <div class="card-header">
-            <span class="wbs-ref">R-01</span> 하이브리드 검색
-            <span class="wbs-ref">R-02</span> 로컬 검색
-            <span class="wbs-ref">R-03</span> 글로벌 검색
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:14px;">&#129302;</span>
+              <span style="font-weight:600;color:#fff;">AX Flow 메인</span>
+              <span class="badge badge-active" style="font-size:9px;">Active</span>
+            </div>
             <span style="flex:1;"></span>
-            <select class="form-select" style="width:130px;">
-              <option>로컬 검색</option>
-              <option>글로벌 검색</option>
-              <option>하이브리드 (자동)</option>
-            </select>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-size:10px;color:#888;">Sub Agent:</span>
+              <select class="form-select" style="width:160px;">
+                <option selected>품질전문가 v2 (정밀)</option>
+                <option>안전관리 (균형)</option>
+                <option>설비진단 (그래프 중심)</option>
+              </select>
+              <span class="badge badge-active" style="font-size:9px;">Active</span>
+            </div>
             <button class="btn btn-ghost btn-sm">대화 초기화</button>
           </div>
 
@@ -1855,23 +1772,6 @@
               </div>
             </div>
 
-            <!-- Mini graph -->
-            <div class="form-label" style="margin-top:12px;">관련 그래프</div>
-            <div class="graph-canvas" style="min-height:160px;">
-              <svg>
-                <line x1="90" y1="70" x2="200" y2="40"/>
-                <line x1="90" y1="70" x2="200" y2="100"/>
-                <line x1="200" y1="40" x2="290" y2="70"/>
-                <line x1="200" y1="100" x2="290" y2="70"/>
-                <line x1="200" y1="40" x2="200" y2="100"/>
-                <line x1="290" y1="70" x2="290" y2="130"/>
-              </svg>
-              <div class="graph-node n-issue" style="left:55px;top:52px;padding:4px 8px;font-size:9px;"><div class="node-label">인쇄 불량</div></div>
-              <div class="graph-node n-material" style="left:162px;top:22px;padding:4px 8px;font-size:9px;"><div class="node-label">잉크 점도</div></div>
-              <div class="graph-node n-process" style="left:162px;top:82px;padding:4px 8px;font-size:9px;"><div class="node-label">인쇄공정</div></div>
-              <div class="graph-node n-doc" style="left:252px;top:52px;padding:4px 8px;font-size:9px;"><div class="node-label">SOP_인쇄</div></div>
-              <div class="graph-node n-equip" style="left:252px;top:112px;padding:4px 8px;font-size:9px;"><div class="node-label">프린터 헤드</div></div>
-            </div>
           </div>
         </div>
 
@@ -2517,7 +2417,6 @@
         <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
           <span style="font-size:10px;color:#888;">마지막 평가: 2026-03-16 06:00 (자동)</span>
           <div class="btn-group">
-            <button class="btn btn-primary btn-sm">재평가</button>
             <button class="btn btn-outline btn-sm">평가 이력</button>
           </div>
         </div>
@@ -3355,9 +3254,8 @@
             <div class="form-group">
               <div class="form-label">OCR 엔진</div>
               <select class="form-select">
-                <option selected>Tesseract</option>
-                <option>Clova OCR</option>
-                <option>Google Vision</option>
+                <option selected>Docling</option>
+                <option>MinerU</option>
               </select>
             </div>
             <div class="form-group">
@@ -3511,9 +3409,8 @@
             <div class="form-group">
               <div class="form-label">방식</div>
               <select class="form-select">
-                <option selected>의미 기반 (Semantic)</option>
-                <option>고정 토큰</option>
-                <option>문단 기준</option>
+                <option selected>의미기반 (Semantic)</option>
+                <option>SOP RAG</option>
               </select>
             </div>
             <div class="form-group">
