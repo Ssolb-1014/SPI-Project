@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AX Flow PRD v1.0 — 제품 요구사항 정의서</title>
+<style>
+  @page { size: A4; margin: 20mm; }
+  @media print {
+    body { background: #fff; }
+    .page-break { page-break-before: always; }
+    .no-print { display: none; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Segoe UI', sans-serif; background: #f8f9fb; color: #1a1a2e; line-height: 1.72; font-size: 14.5px; }
+
+  /* ===== NAV ===== */
+  .side-nav { position: fixed; left: 0; top: 0; width: 260px; height: 100vh; background: #fff; border-right: 1px solid #e5e7eb; padding: 24px 0; overflow-y: auto; z-index: 100; }
+  .side-nav .nav-logo { padding: 0 24px 20px; border-bottom: 1px solid #e5e7eb; margin-bottom: 16px; }
+  .side-nav .nav-logo h2 { font-size: 16px; font-weight: 700; color: #4f46e5; }
+  .side-nav .nav-logo p { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .side-nav a { display: block; padding: 7px 24px; font-size: 13px; color: #64748b; text-decoration: none; transition: all 0.15s; }
+  .side-nav a:hover { color: #4f46e5; background: #f1f5f9; }
+  .side-nav a.depth-2 { padding-left: 40px; font-size: 12px; color: #94a3b8; }
+  .side-nav a.depth-3 { padding-left: 56px; font-size: 11.5px; color: #b0b8c9; }
+  .side-nav .nav-section { font-size: 10px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; padding: 16px 24px 6px; }
+
+  /* ===== MAIN ===== */
+  .main { margin-left: 260px; padding: 40px 56px 80px; max-width: 960px; }
+
+  /* ===== COVER ===== */
+  .cover { text-align: center; padding: 80px 0 60px; border-bottom: 2px solid #e5e7eb; margin-bottom: 48px; }
+  .cover .badge { display: inline-block; background: #eef2ff; color: #4f46e5; font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; }
+  .cover h1 { font-size: 34px; font-weight: 800; color: #0f172a; line-height: 1.3; }
+  .cover .subtitle { font-size: 16px; color: #64748b; margin-top: 8px; }
+  .cover-meta { display: flex; justify-content: center; gap: 32px; margin-top: 32px; font-size: 13px; color: #94a3b8; }
+  .cover-meta strong { color: #334155; }
+
+  /* ===== SECTION ===== */
+  h2 { font-size: 22px; font-weight: 700; color: #0f172a; margin: 48px 0 8px; padding-bottom: 8px; border-bottom: 2px solid #4f46e5; }
+  h3 { font-size: 17px; font-weight: 700; color: #1e293b; margin: 32px 0 8px; }
+  h4 { font-size: 14.5px; font-weight: 700; color: #334155; margin: 24px 0 6px; }
+  h5 { font-size: 13.5px; font-weight: 600; color: #475569; margin: 16px 0 4px; }
+  p, li { color: #334155; }
+  p { margin-bottom: 10px; }
+
+  /* ===== TABLE ===== */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+  th, td { border: 1px solid #e2e8f0; padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: #f1f5f9; font-weight: 600; color: #475569; white-space: nowrap; }
+  td { color: #334155; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .tbl-index { width: 100px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: #6366f1; font-weight: 600; }
+  .tbl-comp { font-weight: 600; color: #1e293b; }
+
+  /* ===== BADGES ===== */
+  .badge-priority { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-p0 { background: #fef2f2; color: #dc2626; }
+  .badge-p1 { background: #fefce8; color: #ca8a04; }
+  .badge-p2 { background: #f0fdf4; color: #16a34a; }
+  .badge-mvp { background: #eef2ff; color: #4f46e5; }
+
+  /* ===== CALLOUT ===== */
+  .callout { background: #f8fafc; border-left: 3px solid #4f46e5; padding: 14px 18px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+  .callout.warn { border-left-color: #f59e0b; background: #fffbeb; }
+  .callout.info { border-left-color: #3b82f6; background: #eff6ff; }
+  .callout strong { display: block; font-size: 13px; margin-bottom: 4px; }
+  .callout p { margin: 0; font-size: 13px; color: #475569; }
+
+  /* ===== LISTS ===== */
+  ul, ol { padding-left: 22px; margin-bottom: 12px; }
+  li { margin-bottom: 4px; }
+
+  /* ===== HIERARCHY ===== */
+  .hierarchy { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .hierarchy .h-group { margin-bottom: 12px; }
+  .hierarchy .h-label { font-size: 12px; font-weight: 700; color: #4f46e5; background: #eef2ff; display: inline-block; padding: 2px 10px; border-radius: 4px; margin-bottom: 6px; }
+  .hierarchy .h-items { padding-left: 16px; font-size: 13px; color: #475569; }
+  .hierarchy .h-items span { display: inline-block; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; margin: 2px 4px 2px 0; font-size: 12px; }
+
+  /* ===== FLOW ===== */
+  .flow-steps { display: flex; gap: 0; margin: 16px 0; flex-wrap: wrap; }
+  .flow-step { background: #fff; border: 1px solid #e2e8f0; padding: 12px 16px; border-radius: 8px; flex: 1; min-width: 120px; text-align: center; position: relative; }
+  .flow-step::after { content: '→'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 16px; }
+  .flow-step:last-child::after { display: none; }
+  .flow-step .step-num { font-size: 10px; font-weight: 700; color: #4f46e5; }
+  .flow-step .step-name { font-size: 13px; font-weight: 600; color: #1e293b; margin-top: 2px; }
+
+  /* ===== SCREEN SPEC ===== */
+  .screen-spec { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .screen-spec .spec-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .screen-spec .spec-id { font-family: 'SF Mono', monospace; font-size: 12px; color: #4f46e5; font-weight: 700; background: #eef2ff; padding: 2px 8px; border-radius: 4px; }
+  .screen-spec .spec-title { font-size: 15px; font-weight: 700; color: #0f172a; }
+
+  /* ===== REVISION ===== */
+  .revision-table { margin: 20px 0; }
+  .revision-table th { background: #4f46e5; color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDE NAV ===== -->
+<nav class="side-nav no-print">
+  <div class="nav-logo">
+    <h2>AX Flow PRD</h2>
+    <p>v1.0 | 2026-03-20</p>
+  </div>
+
+  <div class="nav-section">개요</div>
+  <a href="#cover">표지</a>
+  <a href="#revision">개정 이력</a>
+  <a href="#overview">제품 개요</a>
+  <a href="#scope">범위 및 목표</a>
+  <a href="#terms">용어 정의</a>
+  <a href="#ia">정보 구조(IA)</a>
+
+  <div class="nav-section">공통</div>
+  <a href="#common">공통 UI 컴포넌트</a>
+  <a class="depth-2" href="#com-topbar">TopBar</a>
+  <a class="depth-2" href="#com-sidebar">Sidebar</a>
+
+  <div class="nav-section">채팅</div>
+  <a href="#chat">채팅</a>
+  <a class="depth-2" href="#chat-area">대화 영역</a>
+  <a class="depth-2" href="#chat-evidence">답변 근거 패널</a>
+
+  <div class="nav-section">라이브러리</div>
+  <a href="#lib">라이브러리</a>
+  <a class="depth-2" href="#lib-doc">문서</a>
+  <a class="depth-2" href="#lib-form">자료 (문서양식)</a>
+  <a class="depth-2" href="#lib-db">데이터베이스</a>
+  <a class="depth-2" href="#lib-kg">지식그래프</a>
+
+  <div class="nav-section">설정</div>
+  <a href="#settings">설정</a>
+  <a class="depth-2" href="#set-domain">관리 및 설정</a>
+  <a class="depth-2" href="#set-pipeline">파이프라인</a>
+  <a class="depth-2" href="#set-monitor">운영 모니터링</a>
+  <a class="depth-2" href="#set-agent">에이전트</a>
+  <a class="depth-2" href="#set-rbac">권한/RBAC</a>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main">
+
+<!-- ===== COVER ===== -->
+<section class="cover" id="cover">
+  <div class="badge">PRD v1.0</div>
+  <h1>AX Flow<br>제품 요구사항 정의서</h1>
+  <p class="subtitle">산업단지 제조 기업을 위한 AI 기반 문서 검색·질의 시스템</p>
+  <div class="cover-meta">
+    <span>버전 <strong>v1.0</strong></span>
+    <span>작성일 <strong>2026-03-20</strong></span>
+    <span>상태 <strong>Draft</strong></span>
+  </div>
+</section>
+
+<!-- ===== 개정 이력 ===== -->
+<section id="revision">
+  <h2>1. 개정 이력</h2>
+  <table class="revision-table">
+    <thead><tr><th>버전</th><th>일자</th><th>작성자</th><th>변경 내용</th></tr></thead>
+    <tbody>
+      <tr><td>v1.0</td><td>2026-03-20</td><td>기획팀</td><td>최초 작성 — IA 기반 전체 화면 정의</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 2. 제품 개요 ===== -->
+<section id="overview">
+  <h2>2. 제품 개요</h2>
+
+  <h3>2.1 배경 및 목적</h3>
+  <p>산업단지 내 제조 기업들은 장비 매뉴얼, SOP(표준작업절차서), 품질 보고서, 검사 기준서 등 방대한 문서 자산을 보유하고 있으나, 이를 체계적으로 검색·활용하기 어려운 상황이다. <strong>AX Flow</strong>는 문서 그래프 RAG(Retrieval-Augmented Generation) 및 온톨로지 기반 지식 그래프를 활용하여, 제조 현장 담당자가 자연어 질의만으로 필요한 정보를 신속·정확하게 찾을 수 있는 AI Transformation(AX) 시스템이다.</p>
+
+  <h3>2.2 제품 비전</h3>
+  <ul>
+    <li><strong>제조 특화 AI 검색</strong> — 장비·공정·원자재·품질 도메인에 최적화된 지식 그래프 기반 질의 응답</li>
+    <li><strong>문서 전처리 자동화</strong> — 멀티 포맷(PDF, DOCX, HWP, XLSX) 파싱, OCR, 의미론적 청킹 파이프라인</li>
+    <li><strong>투명한 근거 제시</strong> — 답변에 사용된 원본 문서·그래프 경로를 추적 가능한 형태로 시각화</li>
+    <li><strong>관리자 자율 운영</strong> — 온톨로지 편집, 파라미터 튜닝, A/B 테스트를 GUI로 직접 수행</li>
+  </ul>
+
+  <h3>2.3 대상 사용자</h3>
+  <table>
+    <thead><tr><th>사용자 유형</th><th>역할</th><th>주요 사용 기능</th></tr></thead>
+    <tbody>
+      <tr><td><strong>현장 담당자</strong></td><td>품질/생산/설비 실무자</td><td>채팅 질의, 문서 업로드, 피드백</td></tr>
+      <tr><td><strong>도메인 관리자</strong></td><td>팀장·QA 담당</td><td>OCR 검수, 그래프 편집, 문서양식 관리</td></tr>
+      <tr><td><strong>시스템 관리자</strong></td><td>IT 운영</td><td>파이프라인 모니터링, 에이전트 설정, RBAC, MCP 관리</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 3. 범위 및 목표 ===== -->
+<section id="scope">
+  <h2>3. 범위 및 목표</h2>
+
+  <h3>3.1 MVP 범위</h3>
+  <p>MVP(Minimum Viable Product)에서는 아래 핵심 워크플로를 구현한다.</p>
+  <div class="flow-steps">
+    <div class="flow-step"><div class="step-num">STEP 1</div><div class="step-name">문서 업로드</div></div>
+    <div class="flow-step"><div class="step-num">STEP 2</div><div class="step-name">파싱·OCR</div></div>
+    <div class="flow-step"><div class="step-num">STEP 3</div><div class="step-name">의미론적 청킹</div></div>
+    <div class="flow-step"><div class="step-num">STEP 4</div><div class="step-name">그래프 추출</div></div>
+    <div class="flow-step"><div class="step-num">STEP 5</div><div class="step-name">하이브리드 검색</div></div>
+    <div class="flow-step"><div class="step-num">STEP 6</div><div class="step-name">AI 답변 생성</div></div>
+  </div>
+
+  <h3>3.2 우선순위 정의</h3>
+  <table>
+    <thead><tr><th>등급</th><th>정의</th><th>기준</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge-priority badge-p0">P0</span></td><td>필수(Must-Have)</td><td>MVP 출시에 반드시 포함. 미구현 시 서비스 불가</td></tr>
+      <tr><td><span class="badge-priority badge-p1">P1</span></td><td>중요(Should-Have)</td><td>MVP 출시 직후 또는 2차 릴리즈에 포함</td></tr>
+      <tr><td><span class="badge-priority badge-p2">P2</span></td><td>희망(Nice-to-Have)</td><td>3차 릴리즈 이후 또는 고객 요구에 따라 결정</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 4. 용어 정의 ===== -->
+<section id="terms">
+  <h2>4. 용어 정의</h2>
+  <table>
+    <thead><tr><th style="width:160px">용어</th><th>정의</th></tr></thead>
+    <tbody>
+      <tr><td><strong>GraphRAG</strong></td><td>지식 그래프(Knowledge Graph)와 RAG(검색 증강 생성)를 결합한 검색·답변 기법. 문서 내 엔티티 간 관계를 그래프로 구축하여 벡터 유사도 검색과 그래프 탐색을 동시에 수행한다.</td></tr>
+      <tr><td><strong>온톨로지</strong></td><td>도메인 내 엔티티(장비, 공정, 원자재 등)와 관계(포함, 원인 등)의 유형을 정의하는 스키마. 그래프 추출의 기준 체계.</td></tr>
+      <tr><td><strong>의미론적 청킹</strong></td><td>단순 길이가 아닌 문맥(Context) 단위로 텍스트를 분할하여 의미를 보존하는 전처리 방식.</td></tr>
+      <tr><td><strong>엔티티</strong></td><td>지식 그래프의 노드. 장비명, 공정명, 원자재명 등 독립적 개체를 의미한다.</td></tr>
+      <tr><td><strong>엣지</strong></td><td>지식 그래프에서 엔티티 간 관계를 나타내는 연결선. "원인", "포함", "참조" 등의 타입을 가진다.</td></tr>
+      <tr><td><strong>MCP</strong></td><td>Model Context Protocol. AI 에이전트가 외부 도구(API, DB 등)에 접근하기 위한 표준 프로토콜.</td></tr>
+      <tr><td><strong>RBAC</strong></td><td>Role-Based Access Control. 사용자 역할(등급)에 따라 접근 가능한 문서·그래프 범위를 제어하는 보안 체계.</td></tr>
+      <tr><td><strong>하이브리드 검색</strong></td><td>벡터 유사도(Vector Search)와 그래프 연결성(Graph Traversal)을 가중 결합하여 최적의 검색 결과를 도출하는 방식.</td></tr>
+      <tr><td><strong>Faithfulness</strong></td><td>RAG 성능 평가 지표. AI 답변이 참조 문서의 내용에 얼마나 충실한지를 측정한다.</td></tr>
+      <tr><td><strong>Sub Agent</strong></td><td>특정 도메인·역할에 최적화된 프롬프트·파라미터를 가진 하위 AI 에이전트. 예: 품질전문가, 설비진단 전문가.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 5. 정보 구조 ===== -->
+<section id="ia">
+  <h2>5. 정보 구조 (Information Architecture)</h2>
+  <p>AX Flow의 전체 화면 구조는 아래와 같이 <strong>5개 대메뉴</strong>와 하위 탭으로 구성된다.</p>
+
+  <div class="hierarchy">
+    <div class="h-group">
+      <div class="h-label">채팅</div>
+      <div class="h-items">
+        <span>대화 영역</span> <span>답변 근거 패널</span>
+      </div>
+    </div>
+    <div class="h-group">
+      <div class="h-label">라이브러리</div>
+      <div class="h-items">
+        <span>문서 (목록 → 상세 → 원본보기 / OCR / 메타데이터 / 그래프연결)</span><br>
+        <span>자료 (문서양식 목록 → 양식 상세 → 미리보기)</span><br>
+        <span>데이터베이스 (DB 목록 → 자료 목록)</span><br>
+        <span>지식그래프 (그래프 탐색기 / 온톨로지 관리 / 사전·매핑 / 변경 이력)</span>
+      </div>
+    </div>
+    <div class="h-group">
+      <div class="h-label">설정</div>
+      <div class="h-items">
+        <span>관리 및 설정 (도메인 관리 / MCP 도구 관리 / Tool 관리)</span><br>
+        <span>파이프라인 (파싱 / 청킹 / 전체 모니터)</span><br>
+        <span>운영 모니터링 (대시보드 / 성능 평가 / 평가 이력)</span><br>
+        <span>에이전트 (에이전트 목록 → 상세 [프롬프트·파라미터·Skill·Hooks·Command] / A/B 비교 테스트)</span><br>
+        <span>권한/RBAC (권한 등급 / 문서 접근 범위 / 그래프 접근 범위 / 접근 감사 로그)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= -->
+<!--                     공통 UI 컴포넌트                        -->
+<!-- ========================================================= -->
+<section id="common" class="page-break">
+  <h2>6. 공통 UI 컴포넌트</h2>
+  <p>모든 화면에 공통으로 적용되는 레이아웃 컴포넌트를 정의한다.</p>
+
+  <!-- TopBar -->
+  <h3 id="com-topbar">6.1 TopBar</h3>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:140px">컴포넌트</th><th>설명</th><th style="width:180px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">COM-01-00</td><td class="tbl-comp">로고 (AX Flow)</td><td>AX Flow 로고 아이콘 + 텍스트. 클릭 시 채팅 화면(홈)으로 이동한다.</td><td>모든 화면 좌상단 고정</td></tr>
+      <tr><td class="tbl-index">COM-01-01</td><td class="tbl-comp">브레드크럼</td><td>현재 위치 계층 경로를 표시한다. (예: 라이브러리 / 문서)</td><td>화면 전환 시 자동 갱신</td></tr>
+      <tr><td class="tbl-index">COM-01-02</td><td class="tbl-comp">알림 벨</td><td>미확인 알림이 있을 경우 빨간 dot을 표시한다. 클릭 시 알림 드롭다운을 노출한다.</td><td>OCR 검수 대기, 파이프라인 오류 등</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Sidebar -->
+  <h3 id="com-sidebar">6.2 Sidebar (좌측 네비게이션)</h3>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:140px">컴포넌트</th><th>설명</th><th style="width:180px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">COM-02-00</td><td class="tbl-comp">채팅 메뉴</td><td>채팅 메뉴 + 하위에 최근 대화 이력 3건을 서브 아이템으로 표시한다.</td><td>기본 활성 메뉴</td></tr>
+      <tr><td class="tbl-index">COM-02-01</td><td>최근 대화 서브 아이템</td><td>최근 대화 내역 3건까지 노출한다. 클릭 시 해당 대화 세션을 복원한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-02-02</td><td>더보기</td><td>클릭 시 전체 채팅 히스토리 목록을 노출한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-03-00</td><td class="tbl-comp">라이브러리 — 문서</td><td>문서 관리 화면으로 이동한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-03-01</td><td>라이브러리 — 자료</td><td>OCR 문서양식 관리 화면으로 이동한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-03-02</td><td>라이브러리 — 데이터베이스</td><td>데이터베이스 화면으로 이동한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-03-03</td><td>라이브러리 — 지식그래프</td><td>지식 그래프 화면으로 이동한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-04-00</td><td class="tbl-comp">설정 — 관리 및 설정</td><td>도메인 / MCP / Tool 관리 화면으로 이동한다.</td><td>구분선 하단에 위치</td></tr>
+      <tr><td class="tbl-index">COM-04-01</td><td>설정 — 파이프라인</td><td>파이프라인(파싱/청킹/전체모니터) 화면으로 이동한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-04-02</td><td>설정 — 운영 모니터링</td><td>토큰 비용 / 성능 평가 화면으로 이동한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-04-03</td><td>설정 — 에이전트</td><td>에이전트 관리 / A/B 테스트 화면으로 이동한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-04-04</td><td>설정 — 권한/RBAC</td><td>권한 등급 / 접근 범위 / 감사 로그 화면으로 이동한다.</td><td></td></tr>
+      <tr><td class="tbl-index">COM-05</td><td class="tbl-comp">사용자 프로필</td><td>이름, 권한을 표시한다.</td><td>Sidebar 최하단 고정</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================= -->
+<!--                          채팅                              -->
+<!-- ========================================================= -->
+<section id="chat" class="page-break">
+  <h2>7. 채팅</h2>
+  <p>사용자가 자연어로 질문하고 AI가 지식 그래프 기반으로 답변하는 핵심 화면이다. 좌측 채팅 영역과 우측 답변 근거 패널로 구성된다.</p>
+
+  <h3 id="chat-area">7.1 채팅 영역</h3>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">CHAT-01-01</td><td class="tbl-comp">Sub Agent 셀렉트</td><td>현재 활성(Active) 상태인 Sub Agent 목록을 드롭다운으로 노출한다. 사용자가 도메인·역할에 맞는 에이전트를 선택하여 대화를 시작한다.</td><td>기본값: 선택 없음</td></tr>
+      <tr><td class="tbl-index">CHAT-01-02</td><td class="tbl-comp">대화 초기화 버튼</td><td>현재 대화 컨텍스트를 초기화한다. 이전 대화 이력은 사이드바 히스토리에 보존된다.</td><td></td></tr>
+      <tr><td class="tbl-index">CHAT-01-03</td><td>사용자 메시지</td><td>우측 정렬 말풍선. 사용자가 입력한 질문을 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">CHAT-01-04</td><td>AI 응답 메시지</td><td>좌측 정렬 말풍선(아바타 AX 포함). 마크다운 서식 및 표 렌더링을 지원한다.</td><td></td></tr>
+      <tr><td class="tbl-index">CHAT-01-05</td><td class="tbl-comp">근거 문서 인용 블록</td><td>AI 답변 하단에 참조 문서명 + 절/청크 번호를 표시한다. 클릭 시 원본 문서 위치로 이동한다.</td><td></td></tr>
+      <tr><td class="tbl-index">CHAT-01-06</td><td>피드백 버튼</td><td>각 AI 답변마다 좋아요/아쉬워요 평가를 수집한다.</td><td>사용자 피드백 루프 연동</td></tr>
+      <tr><td class="tbl-index">CHAT-01-07</td><td>피드백 유도 메시지</td><td>"답변이 도움이 되었나요? 피드백을 남겨주시면 서비스 개선에 도움이 됩니다." 메시지를 각 답변 하단에 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">CHAT-01-08</td><td class="tbl-comp">검색 방식 태그</td><td>Vector/Graph 비중, 검색 타입(Local/Global), 응답시간, 토큰 수를 표시한다.</td><td>예: Vector(0.65) / Graph(0.35) / 응답 1.2초 / 토큰 847</td></tr>
+      <tr><td class="tbl-index">CHAT-01-09</td><td class="tbl-comp">채팅 입력 바</td><td>📎 파일 첨부 버튼 + 텍스트 입력 필드 + 전송 버튼으로 구성한다. Enter 키 또는 전송 클릭으로 발송한다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="chat-evidence">7.2 답변 근거 패널 (우측)</h3>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:180px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">CHAT-02-01</td><td class="tbl-comp">추론 경로 (Graph Path)</td><td>답변 생성에 사용된 노드 간 이동 경로를 태그 체인으로 시각화한다.</td><td>예: 인쇄 불량 → 잉크 점도 → 장비매뉴얼_v2 → Ch.5 트러블슈팅</td></tr>
+      <tr><td class="tbl-index">CHAT-02-02</td><td class="tbl-comp">현재 참조 중인 자료 목록</td><td>사용자가 명시적으로 첨부한 파일, 라이브러리 문서, 웹링크를 표시한다. 항목별 × 버튼으로 제거할 수 있다.</td><td>예: 불량분석_2026Q1_보고서.xlsx / SOP_인쇄공정_v3.docx</td></tr>
+      <tr><td class="tbl-index">CHAT-02-03</td><td class="tbl-comp">참조된 청크 목록</td><td>RAG 검색 결과 청크를 문서명 / 청크# / 본문 발췌 / 유사도 점수 / 원본 보기 버튼으로 표시한다.</td><td>예: 장비매뉴얼_v2 청크#12 유사도 0.94</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout info">
+    <strong>설명가능 AI (XAI) 원칙</strong>
+    <p>채팅 화면은 AI 답변의 근거를 투명하게 제시하여 사용자가 답변의 신뢰도를 직접 검증할 수 있도록 설계한다. 추론 경로(Graph Path)와 참조 청크 목록은 답변의 출처를 역추적할 수 있는 핵심 장치이다.</p>
+  </div>
+</section>
+
+<!-- ========================================================= -->
+<!--                        라이브러리                           -->
+<!-- ========================================================= -->
+<section id="lib" class="page-break">
+  <h2>8. 라이브러리</h2>
+  <p>문서 업로드·관리, OCR 문서양식 정의, 데이터베이스, 지식 그래프를 관리하는 영역이다.</p>
+
+  <!-- 8.1 문서 -->
+  <h3 id="lib-doc">8.1 문서</h3>
+
+  <h4>8.1.1 문서 목록</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-01-01</td><td class="tbl-comp">검색 박스</td><td>문서 제목, 작성자, 키워드를 통합 검색한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-01-02</td><td>상태 필터</td><td>셀렉트 드롭다운. 모든 상태 / 업로드됨 / 파싱 중 / 검수 필요 / 완료 / 오류를 선택한다.</td><td>기본값: 모든 상태</td></tr>
+      <tr><td class="tbl-index">LIB-01-03</td><td>포맷 필터</td><td>모든 포맷 / PDF / DOCX / HWP / XLSX를 선택한다.</td><td>기본값: 모든 포맷</td></tr>
+      <tr><td class="tbl-index">LIB-01-04</td><td>분류 필터</td><td>모든 분류 / 장비매뉴얼 / SOP / 품질보고서 / 검사기준서를 선택한다.</td><td>기본값: 모든 분류</td></tr>
+      <tr><td class="tbl-index">LIB-01-05</td><td class="tbl-comp">문서 업로드 버튼</td><td>클릭 시 업로드 모달창을 노출한다. 최대 5MB까지 동시 업로드가 가능하다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-01-06</td><td class="tbl-comp">문서 목록 테이블</td><td>체크박스 / 문서명 / 포맷 / 분류 / 상태 / 청크 수 / 노드·엣지 수 / 보안등급 / 작성자 / 등록일 컬럼으로 구성한다.</td><td>예시 7건 표시</td></tr>
+      <tr><td class="tbl-index">LIB-01-07</td><td>페이지네이션</td><td>이전/다음 버튼 + 페이지 번호. 필터링된 건수 / 전체 건수를 표시한다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h4>8.1.2 문서 상세</h4>
+  <p>문서 목록에서 항목 클릭 시 진입하는 상세 화면이다. 상단 헤더와 4개 탭(원본보기, OCR/문서양식, 메타데이터, 그래프 연결)으로 구성된다.</p>
+
+  <h5>상세 헤더</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-01-01-01</td><td>← 목록 버튼</td><td>문서 목록으로 복귀한다.</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-02</td><td class="tbl-comp">문서 제목 + 메타 정보</td><td>파일명, 작성자, 등록일, 처리 상태 배지를 표시한다.</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-03</td><td>다운로드 버튼</td><td>원본 문서 파일을 다운로드한다.</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-04</td><td>재처리 버튼</td><td>파이프라인을 재실행한다.</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-05</td><td>삭제 버튼</td><td>문서를 삭제한다. 클릭 시 컨펌창을 노출한다.</td></tr>
+    </tbody>
+  </table>
+
+  <h5>탭 1: 원본보기</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-01-01-01-01</td><td class="tbl-comp">원본 문서 뷰어</td><td>PDF/문서 페이지를 렌더링한다. 줌(−/+) 및 페이지 이동을 지원한다.</td><td>예: 12/48 페이지</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-01-02</td><td class="tbl-comp">문서 정보 사이드패널</td><td>파일명, 포맷, 크기, 페이지 수, 청크 수, 추출 노드, 추출 엣지를 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-01-01-01-03</td><td class="tbl-comp">처리 파이프라인 상태</td><td>파싱→청킹→OCR→추출→적재 5단계의 완료/진행 상태와 각 단계 소요시간을 표시한다.</td><td>예: 파싱 완료(1분 23초)</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-01-04</td><td>변경 이력 타임라인</td><td>그래프 구축 완료 / OCR 검수 완료 / 파싱 완료 / 문서 업로드 등을 시간순 역순으로 표시한다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h5>탭 2: OCR/문서양식</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-01-01-02-01</td><td class="tbl-comp">좌우 대조 뷰 (Split View)</td><td>좌측에 원본 이미지, 우측에 추출 텍스트(편집 가능)를 배치하여 대조 비교한다.</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-02-02</td><td>보정 적용 버튼</td><td>사용자가 편집한 내용을 저장한다.</td></tr>
+    </tbody>
+  </table>
+
+  <h5>탭 3: 메타데이터</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-01-01-03-01</td><td class="tbl-comp">자동 추출 메타데이터 폼</td><td>문서 제목(입력), 작성자(입력), 생성일(입력), 문서 분류(셀렉트), 도메인(셀렉트), 문서양식 매칭(셀렉트)을 표시한다.</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-03-02</td><td>자동 추출 키워드</td><td>태그 형태 키워드 목록 + 추가 입력 필드 + 수정 버튼. 키워드 입력 후 엔터키로 추가한다.</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-03-03</td><td>문서 통계</td><td>총 페이지 / 총 문자 수 / 표 개수 / 이미지 개수 / 청크 수 / 평균 청크 크기(tokens) / OCR 오인식률(%)을 표시한다.</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-03-04</td><td>저장 / 초기화 버튼</td><td>메타데이터 변경을 저장하거나, 자동 추출값으로 초기화한다.</td></tr>
+    </tbody>
+  </table>
+
+  <h5>탭 4: 그래프 연결</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-01-01-04-01</td><td class="tbl-comp">추출된 엔티티 테이블</td><td>엔티티명 / 타입(장비·원자재·공정·이슈·규정) / 신뢰도 / 관계 수를 표시한다.</td><td>예: 프린터 헤드(장비/0.95/8)</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-04-02</td><td>주요 관계 목록</td><td>노드A → 관계 → 노드B 형태로 표시한다.</td><td>예: 프린터 헤드 →사용→ 잉크</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-04-03</td><td>미니 그래프 미리보기</td><td>해당 문서에서 추출된 주요 노드/엣지를 소형 그래프로 시각화한다.</td><td>노드 5개 시각화</td></tr>
+      <tr><td class="tbl-index">LIB-01-01-04-04</td><td>그래프 탐색기에서 보기</td><td>지식 그래프 화면의 그래프 탐색기 탭으로 이동한다. 관련 노드·엣지 개수를 노출한다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8.2 자료 (문서양식) -->
+  <h3 id="lib-form" class="page-break">8.2 자료 (문서양식 관리)</h3>
+  <p>OCR 파싱 시 적용할 문서 양식 템플릿을 정의·관리하는 화면이다.</p>
+
+  <h4>8.2.1 양식 목록</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-02-01</td><td class="tbl-comp">양식 목록</td><td>문서 양식 템플릿 목록을 표시한다. 선택 시 우측에 상세 정보를 표시한다.</td><td>예: 장비매뉴얼_type1(Active) / SOP_type1(Active)</td></tr>
+      <tr><td class="tbl-index">LIB-02-02</td><td>신규 양식 버튼</td><td>새 문서 양식을 추가한다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h4>8.2.2 양식 상세</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-02-01-01</td><td class="tbl-comp">양식 헤더</td><td>양식명 + Active/Draft 배지 + 저장 / 삭제 버튼을 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-02-01-02</td><td class="tbl-comp">연결된 파일 테이블</td><td>이 양식이 적용된 문서 파일 목록(파일명, 페이지 수, 상태)을 표시한다.</td><td>예: 장비매뉴얼_프린터_v2.pdf(48p/완료) 외 3건</td></tr>
+      <tr><td class="tbl-index">LIB-02-01-03</td><td class="tbl-comp">표지/제목 규칙 설정</td><td>제목 계층 구조(2/3/4단계) 셀렉트, 표기 기준(숫자/한글/혼합) 셀렉트를 제공한다.</td><td>기본값: 3단계 / 숫자 기반</td></tr>
+      <tr><td class="tbl-index">LIB-02-01-04</td><td class="tbl-comp">검출 유형 토글</td><td>헤더·꼬리말(ON), 페이지 번호(ON), 표 구조(ON), 이미지·캡션(ON), 수식(OFF) — 5개 항목을 각각 ON/OFF 제어한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-02-01-05</td><td>스캔 시작 단어 패턴</td><td>OCR 스캔 시작 키워드를 입력한다. (예: 목차 / 서론 / 제1장)</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h4>8.2.3 문서 미리보기</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-02-02-01</td><td class="tbl-comp">미리보기 영역</td><td>선택 양식이 적용된 페이지를 렌더링한다. 표 구조는 노란 테두리, 자동 매핑 영역은 파란 테두리로 하이라이트한다.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8.3 데이터베이스 -->
+  <h3 id="lib-db">8.3 데이터베이스</h3>
+  <p>설비 대장, 원자재 이력 등 구조화된 데이터를 관리하는 화면이다.</p>
+
+  <h4>8.3.1 DB 목록</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-03-01-01</td><td class="tbl-comp">데이터베이스 목록</td><td>DB별 이름 / 항목 수 / 필드 수를 표시한다. 선택 시 우측에 테이블을 표시한다.</td><td>예: 설비 관리 대장(24/8)</td></tr>
+      <tr><td class="tbl-index">LIB-03-01-02</td><td>새 DB 버튼</td><td>새 데이터베이스를 생성한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-03-01-03</td><td>일괄 가져오기</td><td>CSV/JSON 파일로 데이터를 일괄 가져온다.</td><td>옵시디언 호환</td></tr>
+      <tr><td class="tbl-index">LIB-03-01-04</td><td>일괄 내보내기</td><td>현재 DB 데이터를 CSV/JSON으로 내보낸다.</td><td>옵시디언 호환</td></tr>
+    </tbody>
+  </table>
+
+  <h4>8.3.2 DB 자료 목록</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-03-01-05</td><td class="tbl-comp">DB 헤더</td><td>DB 이름 + "업로드" 버튼을 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-03-01-06</td><td>검색 바</td><td>항목 텍스트 검색을 수행한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-03-01-07</td><td class="tbl-comp">활성 필터 태그</td><td>필터 조건을 태그로 표시한다. × 클릭 제거 및 + 필터 추가 버튼을 제공한다.</td><td>예: 상태 = 가동중 / 점검일 < 30일</td></tr>
+      <tr><td class="tbl-index">LIB-03-01-08</td><td>정렬 셀렉트</td><td>설비명↑ / 최근 점검일 / 상태 / 등록일 기준으로 정렬한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-03-01-09</td><td class="tbl-comp">데이터 테이블</td><td>체크박스 / 설비명 / 설비코드 / 공정 / 상태 / 최근 점검일 / 다음 점검 / 담당자 / 관련 문서 컬럼으로 구성한다.</td><td>예: 오프셋 인쇄기 A-1(가동중)</td></tr>
+      <tr><td class="tbl-index">LIB-03-01-10</td><td>페이지네이션</td><td>이전, 다음 버튼을 제공한다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8.4 지식그래프 -->
+  <h3 id="lib-kg" class="page-break">8.4 지식그래프</h3>
+  <p>문서에서 추출된 엔티티·관계를 시각화하고 편집하는 영역이다. 4개 탭으로 구성된다.</p>
+
+  <h4>8.4.1 그래프 탐색기 탭</h4>
+
+  <h5>그래프 캔버스</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-04-01-01</td><td>노드 검색 입력</td><td>노드 이름으로 검색하여 포커스한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-04-01-02</td><td>타입 필터 셀렉트</td><td>전체 타입 / 장비 / 공정 / 원자재 / 이슈를 선택한다.</td><td>기본값: 전체 타입</td></tr>
+      <tr><td class="tbl-index">LIB-04-01-03</td><td>2D / 3D 전환 버튼</td><td>그래프 렌더링 모드를 전환한다.</td><td>기본값: 2D</td></tr>
+      <tr><td class="tbl-index">LIB-04-01-04</td><td>리셋 버튼</td><td>줌/위치를 초기화한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-04-01-05</td><td class="tbl-comp">그래프 캔버스</td><td>노드(draggable) + 엣지(SVG line) 인터랙티브 그래프. 줌인/아웃 및 패닝을 지원한다.</td><td>예시 노드 8개</td></tr>
+      <tr><td class="tbl-index">LIB-04-01-06</td><td class="tbl-comp">범례 (Legend)</td><td>6개 노드 타입 색상 표시: 이슈(빨강), 장비(보라), 공정(노랑), 원자재(파랑), 문서(초록), 작업자(청록). 전체 노드/엣지 수치를 표시한다.</td><td>필터 / 전체보기 버튼</td></tr>
+    </tbody>
+  </table>
+
+  <h5>노드 상세 패널</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-04-02-01</td><td class="tbl-comp">선택된 노드 정보</td><td>노드 ID, 타입, 생성일, 출처 문서, 신뢰도, 관련 노드 수를 표시한다.</td><td>예: ISS-2026-0045 / 이슈 / 신뢰도 0.92</td></tr>
+      <tr><td class="tbl-index">LIB-04-02-02</td><td class="tbl-comp">속성 편집 폼</td><td>이름 입력 / 타입 셀렉트(장비·공정·원자재·이슈·문서·작업자) / 설명 textarea. 저장·삭제 버튼을 제공한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-04-02-03</td><td class="tbl-comp">연결된 엣지 목록</td><td>A →관계→ B 형태로 표시한다. + 엣지 추가 / 엣지 편집 버튼을 제공한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-04-02-04</td><td class="tbl-comp">원본 추적</td><td>원본 문서명 / 페이지 / 청크# / 본문 발췌를 표시한다. "원본 문서로 이동" 버튼을 제공한다.</td><td>예: 장비매뉴얼_v2.pdf p.12 청크#7</td></tr>
+      <tr><td class="tbl-index">LIB-04-02-05</td><td>오류 플래그</td><td>그래프 무결성 오류를 표시한다. 수정 / 연결 / 삭제 / 무시 버튼을 제공한다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h4>8.4.2 온톨로지 관리 탭</h4>
+
+  <h5>추출 현황</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-04-02-01</td><td class="tbl-comp">대시보드</td><td>추출 엔티티 수 / 관계 수 / 평균 신뢰도 / 마지막 추출 시간 / 처리 문서(완료/전체) / 추출 모델을 표시한다.</td><td>추출 실행 / 프롬프트 설정 버튼</td></tr>
+    </tbody>
+  </table>
+
+  <h5>온톨로지 정의</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-04-02-02</td><td class="tbl-comp">엔티티 타입 테이블</td><td>색상 / 이름 / 설명 / 노드 수를 표시한다. + 엔티티 타입 추가 / 편집 버튼을 제공한다.</td><td>예: 장비(218) / 공정(87) / 원자재(156)</td></tr>
+      <tr><td class="tbl-index">LIB-04-02-02-01</td><td class="tbl-comp">관계 타입 테이블</td><td>이름 / 방향(단방향·양방향) / 설명 / 엣지 수를 표시한다. + 관계 타입 추가 / 편집 버튼을 제공한다.</td><td>예: 포함(412) / 원인(287)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>8.4.3 사전/매핑 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-04-03-01</td><td class="tbl-comp">동의어 테이블</td><td>대표어 / 동의어 태그 / 적용 범위(전체·도메인별)를 표시한다. + 동의어 추가 / 편집 버튼을 제공한다.</td><td>예: 프린터(인쇄기/PRN-01/Printer)</td></tr>
+      <tr><td class="tbl-index">LIB-04-03-02</td><td class="tbl-comp">불용어 태그 목록</td><td>불용어를 태그로 표시한다. × 제거 + 추가 입력 필드를 제공한다.</td><td>예: 페이지, 그림, 참고, 번호 등 12개</td></tr>
+      <tr><td class="tbl-index">LIB-04-03-03</td><td class="tbl-comp">매핑 규칙 테이블</td><td>규칙명 / 정규식 패턴 / 매핑 대상 타입 / 활성·비활성 상태를 표시한다. + 규칙 추가 / 편집 버튼을 제공한다.</td><td>예: /[A-Z]{3}-\d{2}/ → 장비</td></tr>
+    </tbody>
+  </table>
+
+  <h4>8.4.4 변경 이력 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">LIB-04-04-01</td><td>유형 필터 셀렉트</td><td>전체 유형 / 노드 추가 / 노드 수정 / 노드 삭제 / 엣지 추가 / 엣지 삭제를 선택한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-04-04-01-01</td><td>기간 필터 셀렉트</td><td>최근 7일 / 최근 30일 / 전체를 선택한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-04-04-01-02</td><td class="tbl-comp">변경 이력 테이블</td><td>시간 / 작업자(시스템·사용자) / 유형 / 대상 / 상세 / 롤백 버튼 컬럼으로 구성한다.</td><td>예시 8건</td></tr>
+      <tr><td class="tbl-index">LIB-04-04-02</td><td class="tbl-comp">이력 요약</td><td>총 변경 수 / 수동 편집 / 자동 추출 / 실체 병합 / 롤백 횟수를 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-04-04-02-01</td><td>최근 7일 활동 타임라인</td><td>일별 변경 요약을 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">LIB-04-04-02-02</td><td class="tbl-comp">스냅샷 관리</td><td>버전별 스냅샷 목록 + 복원 버튼 + 스냅샷 저장 버튼을 제공한다.</td><td>예: v3.2(03-16 09:30)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================= -->
+<!--                          설정                              -->
+<!-- ========================================================= -->
+<section id="settings" class="page-break">
+  <h2>9. 설정</h2>
+  <p>시스템 운영에 필요한 도메인 관리, 파이프라인 모니터링, 에이전트 구성, 보안 설정을 수행하는 영역이다.</p>
+
+  <!-- 9.1 관리 및 설정 -->
+  <h3 id="set-domain">9.1 관리 및 설정</h3>
+
+  <h4>9.1.1 도메인 관리 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-01-01</td><td class="tbl-comp">워크스페이스 테이블</td><td>도메인명 / 공장·부서 / 문서 수 / 노드 수 / 생성일 / 상태(Active·Setup)를 표시한다. + 새 워크스페이스 버튼을 제공한다.</td><td>예: 인쇄공정 A공장품질팀(127/1,284/Active)</td></tr>
+      <tr><td class="tbl-index">SET-01-01-01</td><td>도메인 이름 / 소속 입력</td><td>도메인 이름 입력 및 소속 공장·부서를 입력한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-01-01-02</td><td>전용 인덱스</td><td>전용 인덱스명을 읽기전용으로 표시한다.</td><td>예: idx_print_qa</td></tr>
+      <tr><td class="tbl-index">SET-01-01-03</td><td class="tbl-comp">프롬프트 페르소나 셀렉트</td><td>제조 품질 전문가 v2 / 안전관리 어시스턴트 / 설비 진단 전문가를 선택한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-01-01-04</td><td>연결된 동의어 사전</td><td>도메인 전용 사전 및 공통 사전을 표시하고 각각 편집 버튼을 제공한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-01-01-05</td><td>접근 권한 그룹 토글</td><td>팀별 접근 수준을 ON/OFF 제어한다.</td><td>4개 그룹</td></tr>
+      <tr><td class="tbl-index">SET-01-01-06</td><td>설정 저장 / 삭제 버튼</td><td>변경을 저장하거나 워크스페이스를 삭제한다. 삭제 시 확인을 요구한다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h4>9.1.2 MCP 도구 관리 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-01-02-01</td><td class="tbl-comp">MCP 서버 목록 테이블</td><td>서버명 / Type(HTTP·SSE) / Endpoint / Health(OK·Slow·Down) / 활성 토글을 표시한다. 새로고침 및 + 등록 버튼을 제공한다.</td><td>예: Document Parser(HTTP/OK) / n8n Workflow(HTTP/Slow)</td></tr>
+      <tr><td class="tbl-index">SET-01-02-01</td><td class="tbl-comp">신규 MCP 서버 등록 폼</td><td>서버 이름 / Type(HTTP·SSE·WebSocket) / Endpoint / 인증 방식(Bearer·API Key·OAuth·없음) / 인증 토큰 / 자동 동기화 토글 / Health Check 자동 실행 토글을 입력한다.</td><td>서버 등록 / 연결 테스트 / 닫기 버튼</td></tr>
+    </tbody>
+  </table>
+
+  <h4>9.1.3 Tool 관리 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-01-03-01</td><td class="tbl-comp">Tool-use 제어 매트릭스</td><td>Tool명 × Agent 매트릭스. 각 셀에 ON/OFF 토글을 배치한다. 변경사항 저장 버튼을 제공한다.</td><td>6 tools × 3 agents</td></tr>
+      <tr><td class="tbl-index">SET-01-03-02</td><td class="tbl-comp">Tool Registry 테이블</td><td>도구명(monospace) / 설명 / 소속 서버 / 상태(dot) / 활성 토글을 표시한다. 전체 동기화 및 + 도구 등록 버튼을 제공한다.</td><td>예: document_search / graph_query 등 7건</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9.2 파이프라인 -->
+  <h3 id="set-pipeline" class="page-break">9.2 파이프라인</h3>
+  <p>문서 전처리 파이프라인(파싱→청킹→추출→적재)의 상태를 모니터링하고 설정을 관리하는 화면이다.</p>
+
+  <h4>9.2.1 파싱 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-02-01</td><td class="tbl-comp">KPI 카드 (3개)</td><td>파싱 성공률 / 파싱 실패 문서 수 / 평균 처리 시간을 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-02-01-01</td><td class="tbl-comp">OCR 검수 Before/After</td><td>좌측에 원본 문서 이미지, 우측에 파싱 결과 텍스트를 배치하여 대조 비교한다.</td><td>Split View</td></tr>
+      <tr><td class="tbl-index">SET-02-01-02</td><td>파싱 오류 로그 테이블</td><td>시간 / 문서명 / 오류 유형(표 인식 실패·파싱 실패) / 재처리·무시 버튼으로 구성한다.</td><td>기간 필터(오늘/7일/전체)</td></tr>
+      <tr><td class="tbl-index">SET-02-01-03</td><td class="tbl-comp">파싱 설정 패널</td><td>OCR 엔진 셀렉트 및 포맷별 ON/OFF 토글(PDF·DOCX·HWP·XLSX/CSV)을 제공한다.</td><td>기본값: Tesseract / 전체 ON</td></tr>
+      <tr><td class="tbl-index">SET-02-01-04</td><td>구조 인식 옵션 토글</td><td>표 구조 보존 / 이미지·캡션 결합 / 수식 인식 / 헤더·꼬리말 제외를 각각 ON/OFF 제어한다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h4>9.2.2 청킹 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-02-02</td><td class="tbl-comp">KPI 카드 (3개)</td><td>청크 정확도 / 오류 청크 수 / 처리 속도를 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-02-02-01</td><td>단계별 오류 로그 테이블</td><td>시간 / 문서명 / 오류 유형 / 재처리·확인·무시 버튼으로 구성한다.</td><td>기간 필터. 예시 4건</td></tr>
+      <tr><td class="tbl-index">SET-02-02-02</td><td class="tbl-comp">청크 설정 패널</td><td>방식 셀렉트 / 최대 토큰 입력 / 오버랩 입력을 제공한다.</td><td>기본값: 의미 기반 / 512 / 50</td></tr>
+      <tr><td class="tbl-index">SET-02-02-03</td><td>평가 로그 타임라인</td><td>시간순 로그를 표시한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-02-02-04</td><td>구조 인식 옵션 토글</td><td>표 구조 보존 / 이미지·캡션 결합 / 수식 인식 / 헤더·꼬리말 제외를 ON/OFF 제어한다.</td><td>파싱 탭과 동일 항목</td></tr>
+    </tbody>
+  </table>
+
+  <h4>9.2.3 전체모니터 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-02-03</td><td>상태 필터 셀렉트</td><td>전체 상태 / 진행 중 / 실패 / 완료를 선택한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-02-03-01</td><td>기간 필터 셀렉트</td><td>오늘 / 최근 7일 / 최근 30일을 선택한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-02-03-02</td><td class="tbl-comp">파이프라인 상태 테이블</td><td>문서명 / 단계(파싱→청킹→추출→적재 시각적 컬러 dot) / 상태 / 시작시간 / 소요시간 / 액션(로그·상세·검수하기·재시도·무시) 컬럼으로 구성한다.</td><td>예시 6건</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>파이프라인 연계 포인트</strong>
+    <p>파이프라인 전체 모니터의 "검수하기" 액션은 라이브러리 > 문서 > 문서 상세의 OCR/문서양식 탭으로 이동하여 검수를 수행한다. "재시도" 액션은 해당 문서의 실패 단계부터 파이프라인을 재실행한다.</p>
+  </div>
+
+  <!-- 9.3 운영 모니터링 -->
+  <h3 id="set-monitor">9.3 운영 모니터링</h3>
+
+  <h4>9.3.1 대시보드</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-03-01</td><td class="tbl-comp">KPI 카드 (4개)</td><td>일일 토큰 사용량(K) / 월간 비용($) / RAG Faithfulness / 평균 응답 시간(초)을 표시한다.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>9.3.2 성능 평가</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-03-02</td><td class="tbl-comp">정량적 성능 평가 테이블 (Ragas)</td><td>지표 / 현재 점수 / 지난주 / 추이(▲▼) / 목표 컬럼으로 구성한다. 마지막 평가 시간, 재평가·평가 이력 버튼을 표시한다.</td><td>예: Faithfulness 0.91(▲+0.03/목표0.90) / Context Precision 0.82(▼-0.02/목표0.85→미달)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>9.3.3 평가 이력</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-03-03</td><td class="tbl-comp">평가 이력 버튼</td><td>설정에 따른 평가 결과를 노출한다.</td><td>평가 스케줄러 논의 필요</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9.4 에이전트 -->
+  <h3 id="set-agent" class="page-break">9.4 에이전트</h3>
+  <p>AI 에이전트의 프롬프트, 검색 파라미터, Skill, Hooks, Command를 관리하고 A/B 테스트를 수행하는 화면이다.</p>
+
+  <h4>9.4.1 에이전트 목록 탭</h4>
+
+  <h5>에이전트 리스트</h5>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-04-01-01</td><td class="tbl-comp">Main Agent 카드</td><td>AX Flow 메인 — 최상위 에이전트. Skill / Hook / Cmd 보유 수를 표시한다. 항상 Active 상태이다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-04-01-01-01</td><td class="tbl-comp">Sub Agent 목록</td><td>에이전트별 이름, Temperature, Vector 비중, Top-K, 상태(Active/Inactive), Skill·Hook·Cmd 보유 수를 표시한다.</td><td>예: 품질전문가 v2(T=0.3/V:0.65/K=5/Active)</td></tr>
+    </tbody>
+  </table>
+
+  <h5>에이전트 상세</h5>
+  <p>에이전트 선택 시 표시되는 상세 설정 영역이다. 5개 탭으로 구성된다.</p>
+
+  <table>
+    <thead><tr><th>탭</th><th class="tbl-index">ID</th><th style="width:150px">컴포넌트</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3"><strong>프롬프트</strong></td><td class="tbl-index">SET-04-01-02-01</td><td>에이전트명 입력</td><td>에이전트 이름을 입력한다.</td></tr>
+      <tr><td class="tbl-index">SET-04-01-02-02</td><td class="tbl-comp">System 프롬프트 textarea</td><td>시스템 프롬프트를 편집한다. 에이전트의 역할·전문 분야·응답 스타일을 정의한다.</td></tr>
+      <tr><td class="tbl-index">SET-04-01-02-03</td><td class="tbl-comp">User 프롬프트 템플릿</td><td>사용자 프롬프트 템플릿을 편집한다. {query} 변수를 포함한다.</td></tr>
+      <tr><td rowspan="3"><strong>파라미터</strong></td><td class="tbl-index">SET-04-01-03-01</td><td class="tbl-comp">하이브리드 비중 슬라이더</td><td>Vector(0~1) / Graph(0~1) 가중치를 조절한다. 합계 1.0을 유지한다.</td></tr>
+      <tr><td class="tbl-index">SET-04-01-03-02</td><td class="tbl-comp">LLM 파라미터 슬라이더</td><td>Temperature(0~1) / Top-P(0~1)를 조절한다.</td></tr>
+      <tr><td class="tbl-index">SET-04-01-03-03</td><td class="tbl-comp">Retrieval 파라미터 슬라이더</td><td>Top-K(1~20) / Score Threshold(0~1)를 조절한다.</td></tr>
+      <tr><td><strong>Skill</strong></td><td class="tbl-index">SET-04-01-04</td><td class="tbl-comp">Skill 목록</td><td>skill.md 기반 프롬프트를 관리한다. 활성 토글 / Skill명 / 파일명 / 설명 / 연결된 Tool·MCP 태그를 표시한다. + 새 Skill / 편집 버튼을 제공한다.</td></tr>
+      <tr><td><strong>Hooks</strong></td><td class="tbl-index">SET-04-01-05</td><td class="tbl-comp">Hooks 목록</td><td>활성 토글 / Hook명 / 설명 / 시점(Before·After) 태그를 표시한다. 전체 관리 링크를 제공한다.</td></tr>
+      <tr><td><strong>Command</strong></td><td class="tbl-index">SET-04-01-06</td><td class="tbl-comp">Command 목록</td><td>명령어 / 설명 / 활성 토글을 표시한다. + 새 커맨드 버튼을 제공한다.</td></tr>
+    </tbody>
+  </table>
+
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:160px">컴포넌트</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-04-01-07</td><td class="tbl-comp">삭제 / 저장 버튼</td><td>에이전트 삭제(확인 필요) 및 모든 탭 설정을 통합 저장한다.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>9.4.2 A/B 비교 테스트 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:180px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-04-02-01</td><td class="tbl-comp">에이전트 A 패널</td><td>에이전트 셀렉트 + 채팅 영역 + 성능 지표(응답시간·토큰·Relevance)를 표시한다.</td><td>예: 품질전문가 v2 / 1.2초 / 토큰 847 / 0.92</td></tr>
+      <tr><td class="tbl-index">SET-04-02-02</td><td class="tbl-comp">에이전트 B 패널</td><td>동일 구조. 다른 에이전트를 선택할 수 있다.</td><td>예: 안전관리 / 1.8초 / 토큰 1124 / 0.78</td></tr>
+      <tr><td class="tbl-index">SET-04-02-03</td><td class="tbl-comp">공통 입력창</td><td>질문을 입력하면 양쪽 에이전트에 동시 전송한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-04-02-04</td><td class="tbl-comp">비교 결과 요약 바</td><td>에이전트 A vs B 비교 결과를 한 줄로 요약한다.</td><td>예: A가 정확도 +14% 우위</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9.5 권한/RBAC -->
+  <h3 id="set-rbac" class="page-break">9.5 권한/RBAC</h3>
+  <p>사용자 권한 등급 정의, 문서·그래프 접근 범위 설정, 접근 이벤트 감사 로그를 관리하는 화면이다.</p>
+
+  <h4>9.5.1 권한 등급 관리 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:180px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-05-01</td><td class="tbl-comp">등급 테이블</td><td>등급 / 레벨(L4~L1) / 문서 접근 범위 / 그래프 접근 범위 / 사용자 수를 표시한다. + 등급 추가 / 편집 버튼을 제공한다.</td><td>예: Super Admin(L4) / 관리자(L3) / 편집자(L2) / 뷰어(L1)</td></tr>
+      <tr><td class="tbl-index">SET-05-01-01</td><td>등급 이름 / 레벨</td><td>등급 이름 입력 및 접근 레벨(L1~L4) 셀렉트를 제공한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-01-02</td><td class="tbl-comp">문서 접근 정책 토글</td><td>소속 도메인 문서 전체접근 / 타 도메인 일반 문서 읽기전용 / 대외비 / 기밀 / 극비 — 5개 보안등급별 ON/OFF를 제어한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-01-03</td><td class="tbl-comp">그래프 접근 정책 토글</td><td>소속 도메인 노드·엣지 편집 가능 / 타 도메인 노드 읽기전용 / 기밀 엔티티 접근 — 3개 항목을 ON/OFF 제어한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-01-04</td><td class="tbl-comp">검색 제한 토글</td><td>접근 불가 문서 완전 제외 / 접근 불가 문서 존재만 표시 / 접근 불가 노드 파생 답변 차단 — 3개 항목을 ON/OFF 제어한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-01-05</td><td class="tbl-comp">허용 동작 토글</td><td>문서 업로드 / 그래프 편집 CRUD / 검색·질의 / 설정 변경 / 사용자 관리 — 5개 항목을 ON/OFF 제어한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-01-06</td><td>저장 / 등급 삭제 버튼</td><td>변경을 저장하거나 등급을 삭제한다. 소속 사용자가 존재할 경우 삭제가 불가하다.</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h4>9.5.2 문서 접근 범위 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:180px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-05-02</td><td>문서명 검색 입력</td><td>문서명으로 검색한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-02-01</td><td>보안등급 필터</td><td>전체 보안등급 / 일반 / 대외비 / 기밀 / 극비를 선택한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-02-02</td><td>도메인 필터</td><td>전체 도메인 / 인쇄공정 / 포장공정 / 품질관리를 선택한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-02-03</td><td>일괄 보안등급 변경</td><td>선택된 문서들의 보안등급을 일괄 변경한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-02-04</td><td class="tbl-comp">문서별 접근 매트릭스 테이블</td><td>문서명 / 도메인 / 보안등급 / L4~L1 등급별 접근 상태(전체접근·제한접근·읽기전용·접근불가)를 색상 dot으로 표시한다. 편집 버튼을 제공한다.</td><td>예시 6건</td></tr>
+      <tr><td class="tbl-index">SET-05-02-05</td><td class="tbl-comp">보안등급 자동 매핑 안내</td><td>보안등급 설정 시 추출된 그래프 노드에 동일 등급이 자동 상속됨을 안내한다. 기밀 이상 문서의 노드는 L2 이하 검색에서 완전 제외됨을 명시한다.</td><td>Callout(경고) 형태</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <strong>보안등급 자동 상속 규칙</strong>
+    <p>문서에 설정된 보안등급은 해당 문서에서 추출된 그래프 노드에 자동으로 상속된다. 기밀(기밀·극비) 이상 등급이 지정된 문서의 노드는 L2(편집자) 이하 등급의 검색 결과에서 완전히 제외되어 존재 자체가 노출되지 않는다.</p>
+  </div>
+
+  <h4>9.5.3 그래프 접근 범위 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:180px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-05-03</td><td>도메인 필터 셀렉트</td><td>전체 도메인 / 인쇄공정 / 포장공정 / 품질관리를 선택한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-03-01</td><td class="tbl-comp">노드 접근 범위 테이블</td><td>엔티티명 / 타입 / 출처 보안등급 / 최소 접근 레벨(L1~L4 셀렉트) / 편집 버튼을 표시한다.</td><td>예: 설비 비밀번호(보안/극비/L4)</td></tr>
+      <tr><td class="tbl-index">SET-05-03-02</td><td class="tbl-comp">접근 범위 상속 규칙 토글</td><td>4개 규칙을 ON/OFF 제어한다: (1) 출처 문서 보안등급 상속, (2) 최고 등급 우선(Max-Level), (3) 연결 노드 전파(Propagation), (4) 도메인 경계 격리.</td><td>각 규칙별 설명 표시</td></tr>
+      <tr><td class="tbl-index">SET-05-03-03</td><td class="tbl-comp">보안등급별 노드 통계</td><td>일반 / 대외비 / 기밀 / 극비별 노드 수와 비율을 프로그레스 바로 표시한다.</td><td>예: 일반 1,312개(71.0%)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>9.5.4 접근 감사 로그 탭</h4>
+  <table>
+    <thead><tr><th class="tbl-index">ID</th><th style="width:180px">컴포넌트</th><th>설명</th><th style="width:200px">비고</th></tr></thead>
+    <tbody>
+      <tr><td class="tbl-index">SET-05-04</td><td>발생일시 필터</td><td>날짜 범위(시작~종료) + 빠른 선택(1주일·1개월·3개월·6개월·1년)을 제공한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-04-01</td><td>처리구분 체크박스</td><td>전체 / 검색 / 탐색 / 편집 / 삭제 / 다운로드 — 복수 선택 가능하다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-04-02</td><td>검색키워드</td><td>범위 셀렉트(전체·사용자·대상·사유) + 키워드를 입력한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-04-03</td><td>검색/초기화/다운로드</td><td>필터 적용 검색 / 필터 초기화 / 로그 CSV 다운로드 버튼을 제공한다.</td><td></td></tr>
+      <tr><td class="tbl-index">SET-05-04-04</td><td class="tbl-comp">접근 이벤트 로그 테이블</td><td>시간 / 사용자 / 권한(등급 태그) / 이벤트(검색·탐색·편집·삭제·다운로드·권한 변경) / 대상 / 결과(허용·차단·제한·완료 배지) / 사유 컬럼으로 구성한다.</td><td>예시 8건</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================= -->
+<!--                  WBS 매핑 (화면 ↔ 기능)                     -->
+<!-- ========================================================= -->
+<section id="wbs-mapping" class="page-break">
+  <h2>10. 화면-기능 매핑 (WBS 연계)</h2>
+  <p>각 화면이 WBS의 어떤 기능 요건과 연결되는지를 정리한다. 이를 통해 기획 산출물과 개발 백로그 간 추적성을 확보한다.</p>
+
+  <table>
+    <thead><tr><th>화면</th><th>IA ID</th><th>연관 WBS ID</th><th>WBS 기능명</th><th>우선순위</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3"><strong>채팅</strong></td><td>CHAT-01</td><td>R-01, R-02</td><td>하이브리드 검색, 로컬 검색</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>CHAT-01-08</td><td>R-04</td><td>답변 근거 시각화</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>CHAT-02-01</td><td>R-04</td><td>답변 근거 시각화 (Graph Path)</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+
+      <tr><td rowspan="4"><strong>라이브러리 > 문서</strong></td><td>LIB-01-01-01-01</td><td>D-01</td><td>멀티 포맷 파싱</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>LIB-01-01-02-01</td><td>P-01</td><td>OCR 검수 및 보정</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>LIB-01-01-03-01</td><td>D-03</td><td>메타데이터 추출</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>LIB-01-01-04-01</td><td>C-02</td><td>엔티티/관계 추출</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+
+      <tr><td rowspan="4"><strong>라이브러리 > 지식그래프</strong></td><td>LIB-04-01</td><td>M-01</td><td>그래프 시각화</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>LIB-04-02-01~02</td><td>C-01</td><td>온톨로지 정의</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>LIB-04-02-03~05</td><td>M-02</td><td>그래프 데이터 편집</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>LIB-04-03</td><td>M-04</td><td>사전/매핑 관리</td><td><span class="badge-priority badge-p2">P2</span></td></tr>
+
+      <tr><td rowspan="2"><strong>설정 > 관리 및 설정</strong></td><td>SET-01-01</td><td>DS-01, DS-02</td><td>도메인 워크스페이스 생성 / 설정</td><td><span class="badge-priority badge-p1">P1</span></td></tr>
+      <tr><td>SET-01-02~03</td><td>MCP-01~04</td><td>MCP 서버·Tool 관리</td><td><span class="badge-priority badge-p1">P1</span></td></tr>
+
+      <tr><td rowspan="2"><strong>설정 > 파이프라인</strong></td><td>SET-02-01</td><td>D-01</td><td>멀티 포맷 파싱 (설정)</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>SET-02-02</td><td>D-02</td><td>의미론적 청킹 (설정)</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+
+      <tr><td><strong>설정 > 운영 모니터링</strong></td><td>SET-03</td><td>O-01, O-02</td><td>토큰비용 모니터링, 성능 평가</td><td><span class="badge-priority badge-p1">P1</span></td></tr>
+
+      <tr><td rowspan="2"><strong>설정 > 에이전트</strong></td><td>SET-04-01</td><td>RP-01~03</td><td>프롬프트 튜닝 / 하이브리드 비중 / 파라미터</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+      <tr><td>SET-04-02</td><td>RP-04</td><td>A/B 테스트</td><td><span class="badge-priority badge-mvp">MVP</span></td></tr>
+
+      <tr><td><strong>설정 > 권한/RBAC</strong></td><td>SET-05</td><td>RS-04</td><td>접근 제어(RBAC)</td><td><span class="badge-priority badge-p1">P1</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================= -->
+<!--                     비기능 요구사항                          -->
+<!-- ========================================================= -->
+<section id="nfr" class="page-break">
+  <h2>11. 비기능 요구사항</h2>
+
+  <table>
+    <thead><tr><th style="width:120px">분류</th><th>요구사항</th><th style="width:120px">목표 수준</th></tr></thead>
+    <tbody>
+      <tr><td><strong>성능</strong></td><td>채팅 질의 응답 시간 (문서 50건 이하 도메인 기준)</td><td>3초 이내</td></tr>
+      <tr><td><strong>성능</strong></td><td>문서 파이프라인 처리 속도 (50페이지 PDF 기준)</td><td>5분 이내</td></tr>
+      <tr><td><strong>정확도</strong></td><td>RAG Faithfulness (Ragas 기준)</td><td>0.85 이상</td></tr>
+      <tr><td><strong>정확도</strong></td><td>Answer Relevancy (Ragas 기준)</td><td>0.85 이상</td></tr>
+      <tr><td><strong>보안</strong></td><td>보안등급별 문서·노드 접근 제어</td><td>RBAC 4등급 체계</td></tr>
+      <tr><td><strong>보안</strong></td><td>접근 이벤트 감사 로그 보존 기간</td><td>최소 1년</td></tr>
+      <tr><td><strong>호환성</strong></td><td>지원 문서 포맷</td><td>PDF, DOCX, HWP, XLSX, CSV</td></tr>
+      <tr><td><strong>호환성</strong></td><td>브라우저 호환</td><td>Chrome, Edge 최신 2개 버전</td></tr>
+      <tr><td><strong>확장성</strong></td><td>멀티 도메인 워크스페이스 지원</td><td>도메인별 인덱스 격리</td></tr>
+      <tr><td><strong>확장성</strong></td><td>MCP 서버 연동</td><td>HTTP, SSE, WebSocket</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================= -->
+<!--                       용어 인덱스                           -->
+<!-- ========================================================= -->
+<section id="appendix">
+  <h2>12. 부록</h2>
+
+  <h3>12.1 IA 인덱스 체계 규칙</h3>
+  <table>
+    <thead><tr><th>접두사</th><th>영역</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td><code>COM-</code></td><td>공통 UI (TopBar, Sidebar)</td><td>COM-01-00, COM-02-01</td></tr>
+      <tr><td><code>CHAT-</code></td><td>채팅</td><td>CHAT-01-01, CHAT-02-03</td></tr>
+      <tr><td><code>LIB-</code></td><td>라이브러리 (문서, 자료, DB, 지식그래프)</td><td>LIB-01-06, LIB-04-01-05</td></tr>
+      <tr><td><code>SET-</code></td><td>설정 (관리, 파이프라인, 모니터링, 에이전트, RBAC)</td><td>SET-01-01, SET-05-04-04</td></tr>
+    </tbody>
+  </table>
+
+  <h3>12.2 데이터 예시 참조</h3>
+  <p>본 문서에 포함된 데이터 예시(문서명, 에이전트명, 엔티티 등)는 인쇄 제조 공정 도메인을 기준으로 작성되었으며, 실제 구축 시 고객사의 도메인에 맞게 조정될 수 있다.</p>
+
+  <div class="callout info">
+    <strong>참고</strong>
+    <p>본 PRD는 IA(Information Architecture) 기반으로 화면 단위의 기능 요구사항을 정의한 문서이다. 상세 인터랙션 시나리오, API 명세, 데이터 모델 설계는 별도 산출물로 관리한다.</p>
+  </div>
+</section>
+
+</div><!-- /main -->
+
+</body>
+</html>
