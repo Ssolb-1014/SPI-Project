@@ -60,6 +60,8 @@
 
   /* ===== Admin-only visibility ===== */
   .role-user .admin-only { display: none !important; }
+  .user-only { display: none !important; }
+  .role-user .user-only { display: block !important; }
 
   /* ===== MAIN ===== */
   .main-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -362,6 +364,20 @@
     <div class="nav-item" onclick="showScreen('graph')">
       <span class="nav-icon">&#11044;</span>
       <span class="nav-label">지식그래프</span>
+    </div>
+  </div>
+
+  <div class="sidebar-divider user-only"></div>
+
+  <div class="nav-group user-only">
+    <div class="nav-group-label">관리</div>
+    <div class="nav-item" onclick="showScreen('dashboard')">
+      <span class="nav-icon">&#128202;</span>
+      <span class="nav-label">대시보드</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('rbac-user')">
+      <span class="nav-icon">&#128274;</span>
+      <span class="nav-label">권한/RBAC</span>
     </div>
   </div>
 
@@ -1971,6 +1987,187 @@
   </div>
 </div>
 
+<!-- ================================================================ -->
+<!-- 대시보드 (user)                                                     -->
+<!-- ================================================================ -->
+<div class="screen" id="screen-dashboard">
+  <div class="page-header">
+    <h1>&#128202; 대시보드</h1>
+    <p>시스템 현황을 한눈에 확인합니다</p>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:16px;">
+    <div class="kpi-card">
+      <div class="kpi-label">일일 토큰 사용량</div>
+      <div class="kpi-value">42.3K</div>
+      <div class="kpi-trend up">+5.2K vs 어제</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">월간 비용</div>
+      <div class="kpi-value" style="font-size:22px;">$127<span style="font-size:12px;color:#888;">.40</span></div>
+      <div class="kpi-trend down">+$12.30 vs 지난달</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">평균 응답시간</div>
+      <div class="kpi-value">1.4<span style="font-size:12px;color:#888;">초</span></div>
+      <div class="kpi-trend up">-0.2초 개선</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">토큰 비용 분석</div>
+      <div class="card-body">
+        <div class="detail-row"><span class="dl">그래프 구축 (추출)</span><span class="dv">$48.20 (37.8%)</span></div>
+        <div class="progress-bar" style="margin-bottom:8px;"><div class="progress-fill blue" style="width:37.8%;"></div></div>
+        <div class="detail-row"><span class="dl">검색 응답 생성</span><span class="dv">$52.10 (40.9%)</span></div>
+        <div class="progress-bar" style="margin-bottom:8px;"><div class="progress-fill green" style="width:40.9%;"></div></div>
+        <div class="detail-row"><span class="dl">OCR/파싱</span><span class="dv">$18.30 (14.4%)</span></div>
+        <div class="progress-bar" style="margin-bottom:8px;"><div class="progress-fill yellow" style="width:14.4%;"></div></div>
+        <div class="detail-row"><span class="dl">기타</span><span class="dv">$8.80 (6.9%)</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:6.9%;background:#888;"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">파이프라인 상태 요약</div>
+      <div class="card-body">
+        <div class="grid-5">
+          <div style="text-align:center;">
+            <div style="font-size:20px;font-weight:700;color:#4ade80;">118</div>
+            <div style="font-size:10px;color:#888;">처리 완료</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:20px;font-weight:700;color:#7c8aff;">3</div>
+            <div style="font-size:10px;color:#888;">처리 중</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:20px;font-weight:700;color:#fbbf24;">3</div>
+            <div style="font-size:10px;color:#888;">검수 대기</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:20px;font-weight:700;color:#ef4444;">3</div>
+            <div style="font-size:10px;color:#888;">오류</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:20px;font-weight:700;color:#fff;">92.9%</div>
+            <div style="font-size:10px;color:#888;">성공률</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- 권한/RBAC (user — L3까지만 노출)                                    -->
+<!-- ================================================================ -->
+<div class="screen" id="screen-rbac-user">
+  <div class="page-header">
+    <h1>&#128274; 권한/RBAC</h1>
+    <p>사용자 권한 등급, 문서/그래프 접근 범위, 감사 로그를 관리합니다 <span class="badge badge-warn">L3 이하 설정 가능</span></p>
+  </div>
+  <div class="tabs" id="rbac-user-tabs">
+    <div class="tab active" onclick="showRbacUserTab('rbac-user-levels')">권한 등급 관리</div>
+    <div class="tab" onclick="showRbacUserTab('rbac-user-doc-scope')">문서 접근 범위</div>
+    <div class="tab" onclick="showRbacUserTab('rbac-user-graph-scope')">그래프 접근 범위</div>
+    <div class="tab" onclick="showRbacUserTab('rbac-user-audit')">접근 감사 로그</div>
+  </div>
+
+  <div class="sub-screen active" id="rbac-user-levels">
+    <div class="card">
+      <div class="card-header">권한 등급 정의<span style="flex:1;"></span><button class="btn btn-primary btn-sm">+ 등급 추가</button></div>
+      <div class="card-body np">
+        <table class="data-table">
+          <thead><tr><th>등급</th><th>명칭</th><th>문서 권한</th><th>그래프 권한</th><th>시스템 권한</th><th>사용자 수</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="badge" style="background:#f59e0b22;color:#f59e0b;">L3</span></td>
+              <td style="font-weight:500;">관리자</td>
+              <td><span class="level-full">전체 읽기/쓰기</span></td>
+              <td><span class="level-limited">CRUD (롤백 제외)</span></td>
+              <td><span class="level-limited">RBAC + 모니터링</span></td>
+              <td>5</td>
+              <td><button class="btn btn-outline btn-sm">편집</button></td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:#7c8aff22;color:#7c8aff;">L2</span></td>
+              <td style="font-weight:500;">편집자</td>
+              <td><span class="level-limited">소속 도메인 읽기/쓰기</span></td>
+              <td><span class="level-readonly">읽기 + 코멘트</span></td>
+              <td><span class="level-none">접근 불가</span></td>
+              <td>18</td>
+              <td><button class="btn btn-outline btn-sm">편집</button></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-neutral">L1</span></td>
+              <td style="font-weight:500;">뷰어</td>
+              <td><span class="level-readonly">허용 문서 읽기</span></td>
+              <td><span class="level-readonly">읽기 전용</span></td>
+              <td><span class="level-none">접근 불가</span></td>
+              <td>42</td>
+              <td><button class="btn btn-outline btn-sm">편집</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-screen" id="rbac-user-doc-scope">
+    <div class="card">
+      <div class="card-header">문서 접근 매트릭스<span style="flex:1;"></span><span style="font-size:10px;color:#888;">&#10003; = 접근 허용 &middot; &#10007; = 접근 제한</span></div>
+      <div class="card-body np">
+        <table class="data-table">
+          <thead><tr><th>보안 등급</th><th>L3 관리자</th><th>L2 편집자</th><th>L1 뷰어</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:500;">일반</td><td class="access-cell level-full">&#10003;</td><td class="access-cell level-full">&#10003;</td><td class="access-cell level-full">&#10003;</td></tr>
+            <tr><td style="font-weight:500;">대외비</td><td class="access-cell level-full">&#10003;</td><td class="access-cell level-limited">&#10003;</td><td class="access-cell level-none">&#10007;</td></tr>
+            <tr><td style="font-weight:500;">기밀</td><td class="access-cell level-full">&#10003;</td><td class="access-cell level-none">&#10007;</td><td class="access-cell level-none">&#10007;</td></tr>
+            <tr><td style="font-weight:500;">극비</td><td class="access-cell level-none">&#10007;</td><td class="access-cell level-none">&#10007;</td><td class="access-cell level-none">&#10007;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-screen" id="rbac-user-graph-scope">
+    <div class="card">
+      <div class="card-header">그래프 접근 범위 설정</div>
+      <div class="card-body">
+        <div class="callout callout-info">등급별로 접근 가능한 그래프 노드 타입과 도메인 범위를 설정합니다.</div>
+        <table class="data-table">
+          <thead><tr><th>등급</th><th>접근 가능 노드 타입</th><th>접근 가능 도메인</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge" style="background:#f59e0b22;color:#f59e0b;">L3</span></td><td>전체</td><td>전체 도메인</td><td><button class="btn btn-outline btn-sm">편집</button></td></tr>
+            <tr><td><span class="badge" style="background:#7c8aff22;color:#7c8aff;">L2</span></td><td>장비, 공정, 원자재, 문서</td><td>소속 도메인만</td><td><button class="btn btn-outline btn-sm">편집</button></td></tr>
+            <tr><td><span class="badge badge-neutral">L1</span></td><td>공정, 문서</td><td>소속 도메인만</td><td><button class="btn btn-outline btn-sm">편집</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-screen" id="rbac-user-audit">
+    <div class="card">
+      <div class="card-header">접근 감사 로그<span style="flex:1;"></span>
+        <select class="form-select" style="width:100px;"><option>최근 7일</option><option>최근 30일</option><option>전체</option></select>
+      </div>
+      <div class="card-body np">
+        <table class="data-table">
+          <thead><tr><th>시간</th><th>사용자</th><th>등급</th><th>이벤트</th><th>대상</th><th>결과</th></tr></thead>
+          <tbody>
+            <tr><td style="color:#888;">03-31 09:15</td><td>김현업</td><td><span class="badge" style="background:#7c8aff22;color:#7c8aff;">L2</span></td><td>문서 열람</td><td>SOP_인쇄공정_v3.docx</td><td><span class="badge badge-active">허용</span></td></tr>
+            <tr><td style="color:#888;">03-31 09:10</td><td>김현업</td><td><span class="badge" style="background:#7c8aff22;color:#7c8aff;">L2</span></td><td>문서 열람</td><td>설비점검_SOP_v3.docx (기밀)</td><td><span class="badge badge-error">차단</span></td></tr>
+            <tr><td style="color:#888;">03-31 08:50</td><td>박QA팀장</td><td><span class="badge" style="background:#f59e0b22;color:#f59e0b;">L3</span></td><td>그래프 편집</td><td>인쇄 불량 노드 수정</td><td><span class="badge badge-active">허용</span></td></tr>
+            <tr><td style="color:#888;">03-30 17:30</td><td>이품질</td><td><span class="badge" style="background:#7c8aff22;color:#7c8aff;">L2</span></td><td>채팅 검색</td><td>"잉크 점도 기준"</td><td><span class="badge badge-active">허용</span></td></tr>
+            <tr><td style="color:#888;">03-30 16:20</td><td>최사출</td><td><span class="badge badge-neutral">L1</span></td><td>그래프 열람</td><td>이슈 노드 접근 시도</td><td><span class="badge badge-error">차단</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
   </div><!-- end main-content -->
 </div><!-- end main-wrap -->
 
@@ -1983,6 +2180,7 @@ let currentScreen = 'chat';
 
 // Admin-only screens
 const adminOnlyScreens = ['settings', 'pipeline', 'ops', 'agent', 'rbac'];
+const userOnlyScreens = ['dashboard', 'rbac-user'];
 
 // ===== Screen Map for Breadcrumbs =====
 const screenMap = {
@@ -1996,6 +2194,8 @@ const screenMap = {
   'ops': ['설정', '운영 모니터링'],
   'agent': ['설정', '에이전트'],
   'rbac': ['설정', '권한/RBAC'],
+  'dashboard': ['관리', '대시보드'],
+  'rbac-user': ['관리', '권한/RBAC'],
 };
 
 // ===== Breadcrumb =====
@@ -2023,13 +2223,17 @@ function switchRole(role) {
   // Update sidebar user info
   if (role === 'user') {
     document.getElementById('sidebar-username').textContent = '김현업';
-    document.getElementById('sidebar-userrole').textContent = 'L2 편집자';
+    document.getElementById('sidebar-userrole').textContent = 'L3 관리자';
   } else {
     document.getElementById('sidebar-username').textContent = '김관리';
     document.getElementById('sidebar-userrole').textContent = 'Admin';
   }
   // If currently on an admin-only screen and switching to user, navigate to chat
   if (role === 'user' && adminOnlyScreens.includes(currentScreen)) {
+    showScreen('chat');
+  }
+  // If currently on a user-only screen and switching to admin, navigate to chat
+  if (role === 'admin' && userOnlyScreens.includes(currentScreen)) {
     showScreen('chat');
   }
   // If on graph screen with admin-only tab active and switching to user, reset to explorer
@@ -2045,6 +2249,10 @@ function switchRole(role) {
 function showScreen(id) {
   // If user role and trying to access admin-only screen, abort
   if (currentRole === 'user' && adminOnlyScreens.includes(id)) {
+    return;
+  }
+  // If admin role and trying to access user-only screen, abort
+  if (currentRole === 'admin' && userOnlyScreens.includes(id)) {
     return;
   }
   currentScreen = id;
@@ -2155,6 +2363,20 @@ function showRbacTab(tabId) {
   document.querySelectorAll('#screen-rbac > .sub-screen').forEach(s => s.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
   const tabBar = document.getElementById('rbac-tabs');
+  if (tabBar) {
+    tabBar.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tabBar.querySelectorAll('.tab').forEach(t => {
+      const oc = t.getAttribute('onclick');
+      if (oc && oc.includes(tabId)) t.classList.add('active');
+    });
+  }
+}
+
+// ===== RBAC User Tabs =====
+function showRbacUserTab(tabId) {
+  document.querySelectorAll('#screen-rbac-user > .sub-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  const tabBar = document.getElementById('rbac-user-tabs');
   if (tabBar) {
     tabBar.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     tabBar.querySelectorAll('.tab').forEach(t => {
