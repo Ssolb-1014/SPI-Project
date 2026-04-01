@@ -1423,18 +1423,20 @@
               <div class="card-header">
                 연결된 자료
                 <span style="flex:1;"></span>
-                <span class="badge badge-info">9건</span>
+                <span class="badge badge-info">11건</span>
               </div>
               <div class="card-body np">
                 <table class="data-table">
-                  <thead><tr><th>유형</th><th>자료명</th><th>페이지/크기</th><th>상태</th></tr></thead>
+                  <thead><tr><th>유형</th><th>자료명</th><th>페이지/크기</th><th>상태</th><th>모드</th></tr></thead>
                   <tbody>
-                    <tr><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_프린터_v2.pdf</td><td>48p</td><td><span class="badge badge-active">완료</span></td></tr>
-                    <tr><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_롤러_v1.pdf</td><td>32p</td><td><span class="badge badge-active">완료</span></td></tr>
-                    <tr><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_건조기_v3.pdf</td><td>24p</td><td><span class="badge badge-active">완료</span></td></tr>
-                    <tr><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_코터_v1.pdf</td><td>18p</td><td><span class="badge badge-warn">검수 중</span></td></tr>
-                    <tr><td><span class="tag tag-blue">웹링크</span></td><td style="font-weight:500;">wiki.factory.co.kr/printer-manual</td><td style="font-size:10px;color:#888;">12개 섹션</td><td><span class="badge badge-active">완료</span></td></tr>
-                    <tr><td><span class="tag tag-blue">웹링크</span></td><td style="font-weight:500;">docs.equip.io/roller-spec</td><td style="font-size:10px;color:#888;">8개 섹션</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr class="row-link" onclick="selectResource('장비매뉴얼_프린터_v2.pdf','pdf')"><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_프린터_v2.pdf</td><td>48p</td><td><span class="badge badge-active">완료</span></td><td><span class="badge badge-neutral" style="font-size:9px;">뷰어</span></td></tr>
+                    <tr class="row-link" onclick="selectResource('장비매뉴얼_롤러_v1.pdf','pdf')"><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_롤러_v1.pdf</td><td>32p</td><td><span class="badge badge-active">완료</span></td><td><span class="badge badge-neutral" style="font-size:9px;">뷰어</span></td></tr>
+                    <tr class="row-link" onclick="selectResource('공정절차_가이드.md','md')"><td><span class="tag tag-green">파일</span></td><td style="font-weight:500;">공정절차_가이드.md</td><td>12KB</td><td><span class="badge badge-active">완료</span></td><td><span class="badge" style="font-size:9px;background:#7c8aff22;color:#7c8aff;">편집 가능</span></td></tr>
+                    <tr class="row-link" onclick="selectResource('장비점검_체크리스트.txt','txt')"><td><span class="tag tag-green">파일</span></td><td style="font-weight:500;">장비점검_체크리스트.txt</td><td>4KB</td><td><span class="badge badge-active">완료</span></td><td><span class="badge" style="font-size:9px;background:#7c8aff22;color:#7c8aff;">편집 가능</span></td></tr>
+                    <tr class="row-link" onclick="selectResource('장비매뉴얼_건조기_v3.pdf','pdf')"><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_건조기_v3.pdf</td><td>24p</td><td><span class="badge badge-active">완료</span></td><td><span class="badge badge-neutral" style="font-size:9px;">뷰어</span></td></tr>
+                    <tr class="row-link" onclick="selectResource('장비매뉴얼_코터_v1.pdf','pdf')"><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_코터_v1.pdf</td><td>18p</td><td><span class="badge badge-warn">검수 중</span></td><td><span class="badge badge-neutral" style="font-size:9px;">뷰어</span></td></tr>
+                    <tr class="row-link" onclick="selectResource('wiki.factory.co.kr/printer-manual','web')"><td><span class="tag tag-blue">웹링크</span></td><td style="font-weight:500;">wiki.factory.co.kr/printer-manual</td><td style="font-size:10px;color:#888;">12개 섹션</td><td><span class="badge badge-active">완료</span></td><td><span class="badge badge-neutral" style="font-size:9px;">뷰어</span></td></tr>
+                    <tr class="row-link" onclick="selectResource('docs.equip.io/roller-spec','web')"><td><span class="tag tag-blue">웹링크</span></td><td style="font-weight:500;">docs.equip.io/roller-spec</td><td style="font-size:10px;color:#888;">8개 섹션</td><td><span class="badge badge-active">완료</span></td><td><span class="badge badge-neutral" style="font-size:9px;">뷰어</span></td></tr>
                   </tbody>
                 </table>
                 <div style="padding:6px 12px;font-size:10px;color:#555;">... 외 3건</div>
@@ -1481,15 +1483,25 @@
             </div>
           </div>
 
-          <!-- 우측: 문서 미리보기 -->
+          <!-- 우측: 자료 미리보기 / 에디터 -->
           <div>
             <div class="card" style="height:100%;">
-              <div class="card-header">
-                문서 미리보기
+              <div class="card-header" id="resource-preview-header">
+                <span id="resource-preview-title">문서 미리보기</span>
+                <span id="resource-file-type-badge" class="badge badge-neutral" style="font-size:9px;margin-left:6px;">PDF</span>
                 <span style="flex:1;"></span>
-                <span style="font-size:10px;color:#666;">페이지 12 / 48</span>
+                <!-- 뷰어/에디터 모드 전환 (편집 가능 파일에서만 표시) -->
+                <div id="resource-mode-switcher" style="display:none;margin-right:8px;">
+                  <div style="display:flex;background:#1a1d27;border:1px solid #2a2d3a;border-radius:14px;padding:2px;">
+                    <span class="resource-mode-btn active" id="mode-viewer-btn" onclick="switchResourceMode('viewer')" style="padding:3px 10px;border-radius:12px;font-size:10px;cursor:pointer;color:#888;transition:all 0.2s;">뷰어</span>
+                    <span class="resource-mode-btn" id="mode-editor-btn" onclick="switchResourceMode('editor')" style="padding:3px 10px;border-radius:12px;font-size:10px;cursor:pointer;color:#888;transition:all 0.2s;">편집</span>
+                  </div>
+                </div>
+                <span id="resource-preview-meta" style="font-size:10px;color:#666;">페이지 12 / 48</span>
               </div>
-              <div class="card-body" style="background:#2a2d3a;padding:16px;display:flex;justify-content:center;">
+
+              <!-- 뷰어 모드 (PDF/문서 미리보기) -->
+              <div class="card-body" id="resource-viewer-mode" style="background:#2a2d3a;padding:16px;display:flex;justify-content:center;">
                 <div class="pdf-preview" style="max-width:360px;width:100%;min-height:460px;">
                   <div style="text-align:center;font-size:9px;color:#888;margin-bottom:12px;">디자인(?) 12페이지</div>
                   <h4 style="border-bottom:2px solid #7c8aff;padding-bottom:4px;">1. 서론: 개요</h4>
@@ -1514,6 +1526,90 @@
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <!-- 마크다운 뷰어 모드 -->
+              <div class="card-body" id="resource-md-viewer-mode" style="display:none;background:#1e2030;padding:20px;">
+                <div id="md-rendered-content" style="max-width:100%;font-size:11px;line-height:1.8;color:#ddd;">
+                  <h2 style="color:#fff;border-bottom:1px solid #3a3d5a;padding-bottom:6px;margin-bottom:12px;">공정절차 가이드</h2>
+                  <h3 style="color:#7c8aff;margin-top:16px;">1. 인쇄 공정 개요</h3>
+                  <p>인쇄 공정은 <strong>전처리 &rarr; 인쇄 &rarr; 건조 &rarr; 후처리</strong>의 4단계로 구성된다.</p>
+                  <h3 style="color:#7c8aff;margin-top:16px;">2. 전처리 단계</h3>
+                  <ul style="padding-left:20px;margin:8px 0;">
+                    <li>원자재 입고 검사 수행</li>
+                    <li>잉크 점도 측정: <code style="background:#252840;padding:2px 6px;border-radius:3px;color:#a78bfa;">25 &plusmn; 3 cP</code></li>
+                    <li>롤러 표면 상태 확인</li>
+                  </ul>
+                  <h3 style="color:#7c8aff;margin-top:16px;">3. 품질 기준</h3>
+                  <table style="width:100%;font-size:10px;border-collapse:collapse;margin-top:8px;">
+                    <tr style="background:#252840;"><th style="padding:6px;text-align:left;border:1px solid #3a3d5a;">항목</th><th style="padding:6px;border:1px solid #3a3d5a;">기준값</th><th style="padding:6px;border:1px solid #3a3d5a;">허용 범위</th></tr>
+                    <tr><td style="padding:6px;border:1px solid #3a3d5a;">색상 L*</td><td style="padding:6px;border:1px solid #3a3d5a;">52</td><td style="padding:6px;border:1px solid #3a3d5a;">&plusmn; 2</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #3a3d5a;">건조 온도</td><td style="padding:6px;border:1px solid #3a3d5a;">80&#8451;</td><td style="padding:6px;border:1px solid #3a3d5a;">&plusmn; 5&#8451;</td></tr>
+                  </table>
+                  <blockquote style="border-left:3px solid #7c8aff;padding:8px 12px;margin:12px 0;color:#999;font-size:10px;background:#181b25;">
+                    &#x26A0; 점도 범위 초과 시 즉시 생산 라인 중단 후 품질팀 보고
+                  </blockquote>
+                </div>
+              </div>
+
+              <!-- 텍스트 뷰어 모드 -->
+              <div class="card-body" id="resource-txt-viewer-mode" style="display:none;background:#1e2030;padding:20px;">
+                <pre id="txt-rendered-content" style="font-size:11px;line-height:1.7;color:#ddd;white-space:pre-wrap;font-family:'Consolas','Monaco',monospace;margin:0;">[장비 점검 체크리스트]
+========================================
+
+1. 일일 점검 항목
+   [ ] 프린터 헤드 노즐 상태 확인
+   [ ] 잉크 잔량 체크 (최소 20% 이상)
+   [ ] 롤러 표면 이물질 제거
+   [ ] 건조기 온도 센서 정상 동작 확인
+
+2. 주간 점검 항목
+   [ ] 잉크 점도 측정 (기준: 25 ± 3 cP)
+   [ ] 벨트 장력 점검
+   [ ] 에어 필터 청소
+
+3. 비고
+   - 이상 발견 시 즉시 설비팀 연락
+   - 점검 결과는 MES에 기록할 것</pre>
+              </div>
+
+              <!-- 에디터 모드 (마크다운/텍스트 편집) -->
+              <div class="card-body" id="resource-editor-mode" style="display:none;padding:0;">
+                <!-- 에디터 툴바 -->
+                <div style="display:flex;align-items:center;gap:4px;padding:6px 12px;background:#1a1d27;border-bottom:1px solid #2a2d3a;">
+                  <button class="btn btn-outline btn-sm" title="굵게" style="padding:3px 7px;font-weight:700;">B</button>
+                  <button class="btn btn-outline btn-sm" title="기울임" style="padding:3px 7px;font-style:italic;">I</button>
+                  <button class="btn btn-outline btn-sm" title="코드" style="padding:3px 7px;font-family:monospace;">&lt;/&gt;</button>
+                  <span style="width:1px;height:16px;background:#2a2d3a;margin:0 4px;"></span>
+                  <button class="btn btn-outline btn-sm" title="제목" style="padding:3px 7px;">H</button>
+                  <button class="btn btn-outline btn-sm" title="목록" style="padding:3px 7px;">&#8226;</button>
+                  <button class="btn btn-outline btn-sm" title="표" style="padding:3px 7px;">&#9638;</button>
+                  <button class="btn btn-outline btn-sm" title="링크" style="padding:3px 7px;">&#128279;</button>
+                  <span style="flex:1;"></span>
+                  <span style="font-size:9px;color:#666;" id="editor-file-info">공정절차_가이드.md · 수정됨</span>
+                  <button class="btn btn-primary btn-sm" style="margin-left:8px;">&#128190; 저장</button>
+                </div>
+                <!-- 에디터 본문 -->
+                <textarea id="resource-editor-textarea" style="width:100%;height:420px;background:#181b25;color:#ddd;border:none;padding:16px;font-size:11px;line-height:1.8;font-family:'Consolas','Monaco','Courier New',monospace;resize:none;outline:none;" spellcheck="false"># 공정절차 가이드
+
+## 1. 인쇄 공정 개요
+
+인쇄 공정은 **전처리 → 인쇄 → 건조 → 후처리**의 4단계로 구성된다.
+
+## 2. 전처리 단계
+
+- 원자재 입고 검사 수행
+- 잉크 점도 측정: `25 ± 3 cP`
+- 롤러 표면 상태 확인
+
+## 3. 품질 기준
+
+| 항목 | 기준값 | 허용 범위 |
+|------|--------|-----------|
+| 색상 L* | 52 | ± 2 |
+| 건조 온도 | 80℃ | ± 5℃ |
+
+> ⚠ 점도 범위 초과 시 즉시 생산 라인 중단 후 품질팀 보고</textarea>
               </div>
             </div>
           </div>
@@ -2394,6 +2490,77 @@ function showPipelineTab(tabId) {
       const oc = t.getAttribute('onclick');
       if (oc && oc.includes(tabId)) t.classList.add('active');
     });
+  }
+}
+
+// ===== Resource Preview (뷰어/에디터 모드) =====
+let currentResourceType = 'pdf';
+
+const editableTypes = ['md', 'txt'];
+const typeLabels = { pdf:'PDF', docx:'Word', hwp:'HWP', xlsx:'Excel', csv:'CSV', md:'Markdown', txt:'텍스트', web:'웹링크' };
+
+function selectResource(name, type) {
+  currentResourceType = type;
+  const isEditable = editableTypes.includes(type);
+  // 모드 전환 버튼 표시/숨김
+  document.getElementById('resource-mode-switcher').style.display = isEditable ? 'block' : 'none';
+  // 파일 유형 뱃지
+  const badge = document.getElementById('resource-file-type-badge');
+  badge.textContent = typeLabels[type] || type.toUpperCase();
+  if (isEditable) { badge.style.background = '#7c8aff22'; badge.style.color = '#7c8aff'; }
+  else { badge.style.background = ''; badge.style.color = ''; badge.className = 'badge badge-neutral'; badge.style.fontSize = '9px'; }
+  // 제목 업데이트
+  document.getElementById('resource-preview-title').textContent = name;
+  // 메타 정보
+  const meta = document.getElementById('resource-preview-meta');
+  if (type === 'pdf') meta.textContent = '페이지 12 / 48';
+  else if (type === 'md') meta.textContent = '12KB · UTF-8';
+  else if (type === 'txt') meta.textContent = '4KB · UTF-8';
+  else if (type === 'web') meta.textContent = '웹페이지';
+  else meta.textContent = '';
+  // 기본 모드 전환
+  if (type === 'md') { showResourcePanel('resource-md-viewer-mode'); switchModeBtnActive('viewer'); }
+  else if (type === 'txt') { showResourcePanel('resource-txt-viewer-mode'); switchModeBtnActive('viewer'); }
+  else { showResourcePanel('resource-viewer-mode'); switchModeBtnActive('viewer'); }
+}
+
+function switchResourceMode(mode) {
+  switchModeBtnActive(mode);
+  if (mode === 'editor') {
+    showResourcePanel('resource-editor-mode');
+    const info = document.getElementById('editor-file-info');
+    if (currentResourceType === 'txt') {
+      info.textContent = '장비점검_체크리스트.txt · 수정됨';
+      document.getElementById('resource-editor-textarea').value =
+        '[장비 점검 체크리스트]\n========================================\n\n1. 일일 점검 항목\n   [ ] 프린터 헤드 노즐 상태 확인\n   [ ] 잉크 잔량 체크 (최소 20% 이상)\n   [ ] 롤러 표면 이물질 제거\n   [ ] 건조기 온도 센서 정상 동작 확인\n\n2. 주간 점검 항목\n   [ ] 잉크 점도 측정 (기준: 25 ± 3 cP)\n   [ ] 벨트 장력 점검\n   [ ] 에어 필터 청소\n\n3. 비고\n   - 이상 발견 시 즉시 설비팀 연락\n   - 점검 결과는 MES에 기록할 것';
+    } else {
+      info.textContent = '공정절차_가이드.md · 수정됨';
+      document.getElementById('resource-editor-textarea').value =
+        '# 공정절차 가이드\n\n## 1. 인쇄 공정 개요\n\n인쇄 공정은 **전처리 → 인쇄 → 건조 → 후처리**의 4단계로 구성된다.\n\n## 2. 전처리 단계\n\n- 원자재 입고 검사 수행\n- 잉크 점도 측정: `25 ± 3 cP`\n- 롤러 표면 상태 확인\n\n## 3. 품질 기준\n\n| 항목 | 기준값 | 허용 범위 |\n|------|--------|----------|\n| 색상 L* | 52 | ± 2 |\n| 건조 온도 | 80℃ | ± 5℃ |\n\n> ⚠ 점도 범위 초과 시 즉시 생산 라인 중단 후 품질팀 보고';
+    }
+  } else {
+    if (currentResourceType === 'md') showResourcePanel('resource-md-viewer-mode');
+    else if (currentResourceType === 'txt') showResourcePanel('resource-txt-viewer-mode');
+    else showResourcePanel('resource-viewer-mode');
+  }
+}
+
+function showResourcePanel(panelId) {
+  ['resource-viewer-mode','resource-md-viewer-mode','resource-txt-viewer-mode','resource-editor-mode'].forEach(function(id) {
+    document.getElementById(id).style.display = 'none';
+  });
+  document.getElementById(panelId).style.display = (panelId === 'resource-viewer-mode') ? 'flex' : 'block';
+}
+
+function switchModeBtnActive(mode) {
+  var vb = document.getElementById('mode-viewer-btn');
+  var eb = document.getElementById('mode-editor-btn');
+  if (mode === 'editor') {
+    eb.style.background = '#7c8aff'; eb.style.color = '#fff'; eb.style.fontWeight = '500';
+    vb.style.background = ''; vb.style.color = '#888'; vb.style.fontWeight = '';
+  } else {
+    vb.style.background = '#7c8aff'; vb.style.color = '#fff'; vb.style.fontWeight = '500';
+    eb.style.background = ''; eb.style.color = '#888'; eb.style.fontWeight = '';
   }
 }
 
