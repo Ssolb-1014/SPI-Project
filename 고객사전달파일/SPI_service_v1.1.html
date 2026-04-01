@@ -350,12 +350,8 @@
     <div class="nav-group-label">라이브러리</div>
     <div class="nav-item" onclick="showScreen('docs')">
       <span class="nav-icon">&#128196;</span>
-      <span class="nav-label">문서</span>
-      <span class="nav-badge">127</span>
-    </div>
-    <div class="nav-item" onclick="showScreen('pipeline');showPipelineTab('pipe-resources');">
-      <span class="nav-icon">&#128194;</span>
       <span class="nav-label">자료</span>
+      <span class="nav-badge">127</span>
     </div>
     <div class="nav-item" onclick="showScreen('database')">
       <span class="nav-icon">&#128451;</span>
@@ -603,12 +599,12 @@
 </div>
 
 <!-- ================================================================ -->
-<!-- 문서 (Documents)                                                  -->
+<!-- 자료 (Documents)                                                  -->
 <!-- ================================================================ -->
 <div class="screen" id="screen-docs">
   <div class="sub-screen active" id="docs-list">
     <div class="page-header">
-      <h1>문서</h1>
+      <h1>자료</h1>
       <p>업로드된 문서의 파싱, 청킹, 그래프 연결 상태를 관리합니다</p>
     </div>
     <div class="filter-bar">
@@ -1301,48 +1297,88 @@
     <p>문서 처리 파이프라인의 파싱, 청킹, 전체 모니터 상태를 관리합니다</p>
   </div>
   <div class="tabs" id="pipeline-tabs">
-    <div class="tab active" onclick="showPipelineTab('pipe-resources')">문서</div>
+    <div class="tab active" onclick="showPipelineTab('pipe-resources')">자료</div>
     <div class="tab" onclick="showPipelineTab('pipe-parsing')">파싱</div>
     <div class="tab" onclick="showPipelineTab('pipe-chunking')">청킹</div>
     <div class="tab" onclick="showPipelineTab('pipe-monitor')">전체 모니터</div>
   </div>
 
-  <!-- Tab 0: 자료 (OCR 문서양식 관리) -->
+  <!-- Tab 0: 자료 (문서/웹링크 양식 관리) -->
   <div class="sub-screen active" id="pipe-resources">
     <div class="flex-row" style="height: calc(100vh - 240px);">
       <!-- Left: 양식 목록 -->
       <div style="width:260px;overflow-y:auto;border-right:1px solid #2a2d3a;padding-right:12px;flex-shrink:0;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <span style="font-size:12px;font-weight:600;color:#ccc;">문서 양식 목록</span>
+          <span style="font-size:12px;font-weight:600;color:#ccc;">자료 양식 목록</span>
           <button class="btn btn-primary btn-sm">+ 신규 양식</button>
+        </div>
+        <!-- 유형 필터 -->
+        <div style="margin-bottom:8px;">
+          <select class="form-select" style="width:100%;">
+            <option selected>전체 유형</option>
+            <option>파일</option>
+            <option>웹링크</option>
+          </select>
         </div>
 
         <!-- 양식 항목 -->
         <div class="chunk selected" style="border-left:3px solid #7c8aff;padding:10px 12px;">
-          <div class="chunk-title">장비매뉴얼_type1</div>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128196;</span>
+            <div class="chunk-title">장비매뉴얼_type1</div>
+          </div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
-            <span style="font-size:9px;color:#666;">최종수정: 2025-11-02</span>
+            <span style="font-size:9px;color:#666;">파일 · 최종수정: 2025-11-02</span>
             <span class="badge badge-active">Active</span>
           </div>
         </div>
         <div class="chunk" style="padding:10px 12px;">
-          <div class="chunk-title">SOP_type1</div>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128196;</span>
+            <div class="chunk-title">SOP_type1</div>
+          </div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
-            <span style="font-size:9px;color:#666;">최종수정: 2025-10-15</span>
+            <span style="font-size:9px;color:#666;">파일 · 최종수정: 2025-10-15</span>
             <span class="badge badge-active">Active</span>
           </div>
         </div>
         <div class="chunk" style="padding:10px 12px;">
-          <div class="chunk-title">배치기록_type1</div>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128196;</span>
+            <div class="chunk-title">배치기록_type1</div>
+          </div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
-            <span style="font-size:9px;color:#666;">최종수정: 2025-09-20</span>
+            <span style="font-size:9px;color:#666;">파일 · 최종수정: 2025-09-20</span>
             <span class="badge badge-active">Active</span>
           </div>
         </div>
         <div class="chunk" style="padding:10px 12px;">
-          <div class="chunk-title">검사서_type1</div>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128279;</span>
+            <div class="chunk-title">제조공정_위키</div>
+          </div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
-            <span style="font-size:9px;color:#666;">최종수정: 2025-08-12</span>
+            <span style="font-size:9px;color:#666;">웹링크 · 최종수정: 2025-10-28</span>
+            <span class="badge badge-active">Active</span>
+          </div>
+        </div>
+        <div class="chunk" style="padding:10px 12px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128279;</span>
+            <div class="chunk-title">설비_API_문서</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span style="font-size:9px;color:#666;">웹링크 · 최종수정: 2025-09-30</span>
+            <span class="badge badge-active">Active</span>
+          </div>
+        </div>
+        <div class="chunk" style="padding:10px 12px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128196;</span>
+            <div class="chunk-title">검사서_type1</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span style="font-size:9px;color:#666;">파일 · 최종수정: 2025-08-12</span>
             <span class="badge badge-neutral">Draft</span>
           </div>
         </div>
@@ -1362,21 +1398,43 @@
         <div class="grid-2">
           <!-- 좌측: 양식 설정 -->
           <div>
-            <!-- 연결된 파일 -->
+            <!-- 자료 유형 설정 -->
+            <div class="card">
+              <div class="card-header">자료 유형</div>
+              <div class="card-body">
+                <div class="form-group">
+                  <div class="form-label">소스 유형</div>
+                  <select class="form-select">
+                    <option selected>파일 (PDF, DOCX, HWP, XLSX, CSV)</option>
+                    <option>웹링크 (URL 크롤링)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <div class="form-label">웹링크 크롤링 설정</div>
+                  <div class="toggle-row"><span class="toggle-label">하위 페이지 자동 수집</span><div class="toggle on"></div></div>
+                  <div class="toggle-row"><span class="toggle-label">주기적 재수집</span><div class="toggle"></div></div>
+                  <div class="slider-row"><span class="slider-label">크롤링 깊이</span><input type="range" class="slider" min="1" max="5" value="2"><span class="slider-val">2</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 연결된 자료 -->
             <div class="card">
               <div class="card-header">
-                연결된 파일
+                연결된 자료
                 <span style="flex:1;"></span>
-                <span class="badge badge-info">7건</span>
+                <span class="badge badge-info">9건</span>
               </div>
               <div class="card-body np">
                 <table class="data-table">
-                  <thead><tr><th>파일명</th><th>페이지</th><th>상태</th></tr></thead>
+                  <thead><tr><th>유형</th><th>자료명</th><th>페이지/크기</th><th>상태</th></tr></thead>
                   <tbody>
-                    <tr><td style="font-weight:500;">장비매뉴얼_프린터_v2.pdf</td><td>48</td><td><span class="badge badge-active">완료</span></td></tr>
-                    <tr><td style="font-weight:500;">장비매뉴얼_롤러_v1.pdf</td><td>32</td><td><span class="badge badge-active">완료</span></td></tr>
-                    <tr><td style="font-weight:500;">장비매뉴얼_건조기_v3.pdf</td><td>24</td><td><span class="badge badge-active">완료</span></td></tr>
-                    <tr><td style="font-weight:500;">장비매뉴얼_코터_v1.pdf</td><td>18</td><td><span class="badge badge-warn">검수 중</span></td></tr>
+                    <tr><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_프린터_v2.pdf</td><td>48p</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_롤러_v1.pdf</td><td>32p</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_건조기_v3.pdf</td><td>24p</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_코터_v1.pdf</td><td>18p</td><td><span class="badge badge-warn">검수 중</span></td></tr>
+                    <tr><td><span class="tag tag-blue">웹링크</span></td><td style="font-weight:500;">wiki.factory.co.kr/printer-manual</td><td style="font-size:10px;color:#888;">12개 섹션</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr><td><span class="tag tag-blue">웹링크</span></td><td style="font-weight:500;">docs.equip.io/roller-spec</td><td style="font-size:10px;color:#888;">8개 섹션</td><td><span class="badge badge-active">완료</span></td></tr>
                   </tbody>
                 </table>
                 <div style="padding:6px 12px;font-size:10px;color:#555;">... 외 3건</div>
@@ -2181,8 +2239,7 @@ const userOnlyScreens = ['dashboard', 'rbac-user'];
 // ===== Screen Map for Breadcrumbs =====
 const screenMap = {
   'chat': ['채팅'],
-  'docs': ['라이브러리', '문서'],
-  'resources': ['설정', '파이프라인', '자료'],
+  'docs': ['라이브러리', '자료'],
   'database': ['라이브러리', '데이터베이스'],
   'graph': ['라이브러리', '지식그래프'],
   'settings': ['설정', '관리 및 설정'],
@@ -2276,13 +2333,13 @@ function showDocDetail(docName) {
   document.getElementById('docs-list').classList.remove('active');
   document.getElementById('docs-detail').classList.add('active');
   showDocTab('tab-original');
-  updateBreadcrumb(['라이브러리', '문서', docName]);
+  updateBreadcrumb(['라이브러리', '자료', docName]);
 }
 
 function showDocList() {
   document.querySelectorAll('#screen-docs > .sub-screen').forEach(s => s.classList.remove('active'));
   document.getElementById('docs-list').classList.add('active');
-  updateBreadcrumb(['라이브러리', '문서']);
+  updateBreadcrumb(['라이브러리', '자료']);
 }
 
 function showDocTab(tabId) {
