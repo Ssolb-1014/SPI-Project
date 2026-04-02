@@ -70,6 +70,8 @@
   /* ===== SCREEN ===== */
   .screen { display: none; }
   .screen.active { display: block; }
+  .agent-detail-panel { display: none; }
+  .agent-detail-panel.active { display: block; }
 
   /* ===== COMMON ===== */
   .page-header { margin-bottom: 20px; }
@@ -2173,15 +2175,16 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="tabs" style="margin-bottom:12px;">
-              <div class="tab active">프롬프트</div>
-              <div class="tab">파라미터</div>
-              <div class="tab">Skill</div>
-              <div class="tab">Hooks</div>
-              <div class="tab">Command</div>
+            <div class="tabs" id="agent-detail-tabs" style="margin-bottom:12px;">
+              <div class="tab active" onclick="showAgentDetailTab('agt-prompt')">프롬프트</div>
+              <div class="tab" onclick="showAgentDetailTab('agt-params')">파라미터</div>
+              <div class="tab" onclick="showAgentDetailTab('agt-skill')">Skill</div>
+              <div class="tab" onclick="showAgentDetailTab('agt-hooks')">Hooks</div>
+              <div class="tab" onclick="showAgentDetailTab('agt-command')">Command</div>
             </div>
 
-            <!-- Prompt tab content -->
+            <!-- 프롬프트 탭 -->
+            <div class="agent-detail-panel active" id="agt-prompt">
             <div class="grid-2">
               <div>
                 <div class="form-group">
@@ -2226,6 +2229,381 @@
                 </div>
               </div>
             </div>
+            </div>
+
+            <!-- 파라미터 탭 -->
+            <div class="agent-detail-panel" id="agt-params">
+            <div class="grid-2">
+              <div>
+                <div class="card" style="background:#14161f;">
+                  <div class="card-header">LLM 파라미터</div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <div class="form-label">모델 선택</div>
+                      <select class="form-select">
+                        <option selected>GPT-4o</option>
+                        <option>GPT-4o-mini</option>
+                        <option>Claude 3.5 Sonnet</option>
+                        <option>Claude 3 Opus</option>
+                      </select>
+                    </div>
+                    <div class="slider-row"><span class="slider-label">Temperature</span><input type="range" class="slider" min="0" max="100" value="30"><span class="slider-val">0.3</span></div>
+                    <div class="slider-row"><span class="slider-label">Top-P</span><input type="range" class="slider" min="0" max="100" value="90"><span class="slider-val">0.9</span></div>
+                    <div class="slider-row"><span class="slider-label">Max Tokens</span><input type="range" class="slider" min="256" max="8192" value="4096"><span class="slider-val">4096</span></div>
+                    <div class="slider-row"><span class="slider-label">Frequency Penalty</span><input type="range" class="slider" min="0" max="200" value="0"><span class="slider-val">0.0</span></div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="card" style="background:#14161f;">
+                  <div class="card-header">Retrieval 파라미터</div>
+                  <div class="card-body">
+                    <div class="slider-row"><span class="slider-label">Top-K (검색 결과 수)</span><input type="range" class="slider" min="1" max="20" value="5"><span class="slider-val">5</span></div>
+                    <div class="slider-row"><span class="slider-label">Score Threshold</span><input type="range" class="slider" min="0" max="100" value="70"><span class="slider-val">0.70</span></div>
+                    <div class="slider-row"><span class="slider-label">Graph/Vector 비중 (Alpha)</span><input type="range" class="slider" min="0" max="100" value="45"><span class="slider-val">0.45</span></div>
+                    <div class="form-group" style="margin-top:10px;">
+                      <div class="form-label">검색 전략</div>
+                      <select class="form-select">
+                        <option selected>하이브리드 (Vector + Graph)</option>
+                        <option>Vector Only</option>
+                        <option>Graph Only</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="card" style="background:#14161f;">
+                  <div class="card-header">프리셋</div>
+                  <div class="card-body">
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                      <button class="btn btn-outline btn-sm" style="border-color:#7c8aff;color:#7c8aff;">정밀 검색</button>
+                      <button class="btn btn-outline btn-sm">균형 모드</button>
+                      <button class="btn btn-outline btn-sm">빠른 응답</button>
+                      <button class="btn btn-outline btn-sm">+ 프리셋 저장</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <!-- Skill 탭 -->
+            <div class="agent-detail-panel" id="agt-skill">
+            <div class="grid-2">
+              <div>
+                <div class="card" style="background:#14161f;">
+                  <div class="card-header">등록된 Skill<span style="flex:1;"></span><button class="btn btn-primary btn-sm">+ Skill 추가</button></div>
+                  <div class="card-body np">
+                    <table class="data-table">
+                      <thead><tr><th>Skill 이름</th><th>설명</th><th>트리거</th><th>상태</th><th></th></tr></thead>
+                      <tbody>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">document_search</td>
+                          <td style="font-size:10px;color:#888;">등록된 문서에서 관련 정보 검색</td>
+                          <td><span class="tag tag-blue" style="font-size:9px;">자동</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">graph_query</td>
+                          <td style="font-size:10px;color:#888;">지식그래프 노드/엣지 탐색</td>
+                          <td><span class="tag tag-blue" style="font-size:9px;">자동</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">summarize</td>
+                          <td style="font-size:10px;color:#888;">문서/섹션 요약 생성</td>
+                          <td><span class="tag tag-green" style="font-size:9px;">명령어</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">translate</td>
+                          <td style="font-size:10px;color:#888;">다국어 번역 (한/영/일/중)</td>
+                          <td><span class="tag tag-green" style="font-size:9px;">명령어</span></td>
+                          <td><div class="toggle"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">safety_check</td>
+                          <td style="font-size:10px;color:#888;">안전 관련 질문 우선 처리</td>
+                          <td><span class="tag tag-blue" style="font-size:9px;">자동</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">report_gen</td>
+                          <td style="font-size:10px;color:#888;">품질 보고서 자동 생성</td>
+                          <td><span class="tag tag-green" style="font-size:9px;">명령어</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="card" style="background:#14161f;">
+                  <div class="card-header">Skill 상세 — document_search</div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <div class="form-label">Skill ID</div>
+                      <input class="form-input" value="document_search" readonly style="color:#888;">
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">설명</div>
+                      <input class="form-input" value="등록된 문서에서 관련 정보를 검색합니다">
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">트리거 방식</div>
+                      <select class="form-select">
+                        <option selected>자동 (질문 분석 후 자동 호출)</option>
+                        <option>명령어 (/search)</option>
+                        <option>수동 (사용자 선택)</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">실행 조건</div>
+                      <textarea class="form-input" style="height:60px;resize:vertical;font-size:10px;">질문에 문서, 매뉴얼, SOP, 규격, 기준 등의 키워드가 포함될 때 자동 실행</textarea>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">연결된 도구</div>
+                      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">
+                        <span class="tag">vector_search</span>
+                        <span class="tag">graph_traversal</span>
+                        <span class="tag">reranker</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <!-- Hooks 탭 -->
+            <div class="agent-detail-panel" id="agt-hooks">
+            <div class="grid-2">
+              <div>
+                <div class="card" style="background:#14161f;">
+                  <div class="card-header">등록된 Hooks<span style="flex:1;"></span><button class="btn btn-primary btn-sm">+ Hook 추가</button></div>
+                  <div class="card-body np">
+                    <table class="data-table">
+                      <thead><tr><th>Hook 이름</th><th>이벤트</th><th>실행 시점</th><th>상태</th><th></th></tr></thead>
+                      <tbody>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">log_query</td>
+                          <td><span class="tag" style="font-size:9px;">on_query</span></td>
+                          <td><span class="badge badge-info" style="font-size:9px;">Before</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">sanitize_input</td>
+                          <td><span class="tag" style="font-size:9px;">on_query</span></td>
+                          <td><span class="badge badge-info" style="font-size:9px;">Before</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">add_citation</td>
+                          <td><span class="tag" style="font-size:9px;">on_response</span></td>
+                          <td><span class="badge badge-warn" style="font-size:9px;">After</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">feedback_collect</td>
+                          <td><span class="tag" style="font-size:9px;">on_response</span></td>
+                          <td><span class="badge badge-warn" style="font-size:9px;">After</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">token_counter</td>
+                          <td><span class="tag" style="font-size:9px;">on_response</span></td>
+                          <td><span class="badge badge-warn" style="font-size:9px;">After</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">pii_filter</td>
+                          <td><span class="tag" style="font-size:9px;">on_query</span></td>
+                          <td><span class="badge badge-info" style="font-size:9px;">Before</span></td>
+                          <td><div class="toggle"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#ddd;">error_notify</td>
+                          <td><span class="tag" style="font-size:9px;">on_error</span></td>
+                          <td><span class="badge" style="font-size:9px;background:#ef444422;color:#ef4444;">Error</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="card" style="background:#14161f;">
+                  <div class="card-header">Hook 상세 — add_citation</div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <div class="form-label">Hook ID</div>
+                      <input class="form-input" value="add_citation" readonly style="color:#888;">
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">이벤트</div>
+                      <select class="form-select">
+                        <option>on_query (질문 수신 시)</option>
+                        <option selected>on_response (응답 생성 후)</option>
+                        <option>on_error (오류 발생 시)</option>
+                        <option>on_feedback (피드백 수신 시)</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">실행 시점</div>
+                      <select class="form-select">
+                        <option>Before (전처리)</option>
+                        <option selected>After (후처리)</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">실행 스크립트</div>
+                      <textarea class="form-input" style="height:100px;resize:vertical;font-size:10px;font-family:monospace;">// 응답에 근거 문서 인용 자동 추가
+function addCitation(response, context) {
+  const sources = context.chunks.map(c => c.source);
+  return response + "\n\n[참조] " + sources.join(", ");
+}</textarea>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">실행 우선순위</div>
+                      <select class="form-select">
+                        <option>1 (최우선)</option>
+                        <option selected>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5 (최하위)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <!-- Command 탭 -->
+            <div class="agent-detail-panel" id="agt-command">
+            <div class="grid-2">
+              <div>
+                <div class="card" style="background:#14161f;">
+                  <div class="card-header">등록된 Command<span style="flex:1;"></span><button class="btn btn-primary btn-sm">+ Command 추가</button></div>
+                  <div class="card-body np">
+                    <table class="data-table">
+                      <thead><tr><th>명령어</th><th>설명</th><th>권한</th><th>상태</th><th></th></tr></thead>
+                      <tbody>
+                        <tr>
+                          <td style="font-weight:500;color:#7c8aff;font-family:monospace;">/search</td>
+                          <td style="font-size:10px;color:#888;">문서 검색 실행</td>
+                          <td><span class="badge badge-info" style="font-size:9px;">L1+</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#7c8aff;font-family:monospace;">/summarize</td>
+                          <td style="font-size:10px;color:#888;">문서/섹션 요약</td>
+                          <td><span class="badge badge-info" style="font-size:9px;">L1+</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#7c8aff;font-family:monospace;">/compare</td>
+                          <td style="font-size:10px;color:#888;">두 문서 비교 분석</td>
+                          <td><span class="badge" style="font-size:9px;background:#7c8aff22;color:#7c8aff;">L2+</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#7c8aff;font-family:monospace;">/report</td>
+                          <td style="font-size:10px;color:#888;">품질 보고서 생성</td>
+                          <td><span class="badge" style="font-size:9px;background:#7c8aff22;color:#7c8aff;">L2+</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#7c8aff;font-family:monospace;">/translate</td>
+                          <td style="font-size:10px;color:#888;">다국어 번역</td>
+                          <td><span class="badge badge-info" style="font-size:9px;">L1+</span></td>
+                          <td><div class="toggle"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#7c8aff;font-family:monospace;">/graph</td>
+                          <td style="font-size:10px;color:#888;">지식그래프 직접 쿼리</td>
+                          <td><span class="badge" style="font-size:9px;background:#f59e0b22;color:#f59e0b;">L3+</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:500;color:#7c8aff;font-family:monospace;">/export</td>
+                          <td style="font-size:10px;color:#888;">대화 내용 내보내기</td>
+                          <td><span class="badge badge-info" style="font-size:9px;">L1+</span></td>
+                          <td><div class="toggle on"></div></td>
+                          <td><button class="btn btn-outline btn-sm">편집</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="card" style="background:#14161f;">
+                  <div class="card-header">Command 상세 — /search</div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <div class="form-label">명령어</div>
+                      <input class="form-input" value="/search" readonly style="color:#7c8aff;font-family:monospace;">
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">설명</div>
+                      <input class="form-input" value="등록된 문서에서 키워드/의미 기반 검색을 실행합니다">
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">사용법</div>
+                      <input class="form-input" value="/search [질문] --top [N] --type [vector|graph|hybrid]" readonly style="color:#888;font-family:monospace;font-size:10px;">
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">최소 권한</div>
+                      <select class="form-select">
+                        <option selected>L1 (일반 사용자)</option>
+                        <option>L2 (파워 유저)</option>
+                        <option>L3 (관리자)</option>
+                        <option>L4 (Super Admin)</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">연결된 Skill</div>
+                      <select class="form-select">
+                        <option selected>document_search</option>
+                        <option>graph_query</option>
+                        <option>summarize</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-label">예시</div>
+                      <div style="background:#181b25;border:1px solid #2a2d3a;border-radius:4px;padding:8px;font-size:10px;font-family:monospace;color:#ccc;line-height:1.6;">
+                        <span style="color:#7c8aff;">/search</span> 잉크 점도 기준<br>
+                        <span style="color:#7c8aff;">/search</span> 프린터 헤드 교체 주기 --top 10<br>
+                        <span style="color:#7c8aff;">/search</span> 건조 온도 이상 원인 --type graph
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+
             <div class="btn-group" style="margin-top:12px;">
               <button class="btn btn-primary">저장</button>
               <button class="btn btn-outline">초기화</button>
@@ -2829,6 +3207,19 @@ function switchModeBtnActive(mode) {
 }
 
 // ===== Agent Tabs =====
+function showAgentDetailTab(tabId) {
+  document.querySelectorAll('.agent-detail-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById(tabId).classList.add('active');
+  var tabBar = document.getElementById('agent-detail-tabs');
+  if (tabBar) {
+    tabBar.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+    tabBar.querySelectorAll('.tab').forEach(function(t) {
+      var oc = t.getAttribute('onclick');
+      if (oc && oc.includes(tabId)) t.classList.add('active');
+    });
+  }
+}
+
 function showAgentTab(tabId) {
   document.querySelectorAll('#screen-agent > .sub-screen').forEach(s => s.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
