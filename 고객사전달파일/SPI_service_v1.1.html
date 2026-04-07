@@ -290,6 +290,35 @@
   .agent-item.active { background: #1f2233; border: 1px solid #3a3d5a; }
   .agent-item .agent-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
 
+  /* Docs top-level tab panels */
+  .docs-top-panel { display: none; }
+  .docs-top-panel.active { display: block; }
+
+  /* Agent Store (GPTs-style) */
+  .agent-store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .agent-store-card { background: #181b25; border: 1px solid #2a2d3a; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; gap: 12px; }
+  .agent-store-card:hover { border-color: #7c8aff; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(124,138,255,0.1); }
+  .agent-store-card .asc-top { display: flex; align-items: center; gap: 12px; }
+  .agent-store-card .asc-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; flex-shrink: 0; }
+  .agent-store-card .asc-name { font-size: 15px; font-weight: 600; color: #fff; }
+  .agent-store-card .asc-by { font-size: 10px; color: #666; margin-top: 2px; }
+  .agent-store-card .asc-desc { font-size: 12px; color: #999; line-height: 1.6; flex: 1; }
+  .agent-store-card .asc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .agent-store-card .asc-tag { font-size: 10px; padding: 3px 10px; background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 12px; color: #888; }
+  .agent-store-card .asc-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+  .agent-store-card .asc-stat { font-size: 10px; color: #666; display: flex; align-items: center; gap: 4px; }
+  .agent-store-card .asc-btn { padding: 6px 16px; background: #7c8aff; color: #fff; border: none; border-radius: 8px; font-size: 11px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .agent-store-card .asc-btn:hover { background: #6b7aee; }
+  .agent-store-featured { background: linear-gradient(135deg, #1a1d35 0%, #181b25 100%); border-color: #3a3d6a; }
+  .agent-store-search { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .agent-store-search input { flex: 1; padding: 10px 14px; background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 8px; color: #ddd; font-size: 13px; font-family: inherit; }
+  .agent-store-search input:focus { border-color: #7c8aff; outline: none; }
+  .agent-store-search input::placeholder { color: #555; }
+  .agent-store-categories { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .agent-store-cat { padding: 6px 14px; background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 20px; font-size: 11px; color: #888; cursor: pointer; transition: all 0.15s; }
+  .agent-store-cat:hover { border-color: #7c8aff; color: #ccc; }
+  .agent-store-cat.active { background: #252840; border-color: #7c8aff; color: #7c8aff; }
+
   /* Scrollbar */
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -362,6 +391,10 @@
     <div class="nav-item" onclick="showScreen('graph')">
       <span class="nav-icon">&#11044;</span>
       <span class="nav-label">지식그래프</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('agent-store')">
+      <span class="nav-icon">&#129302;</span>
+      <span class="nav-label">에이전트</span>
     </div>
   </div>
 
@@ -604,11 +637,18 @@
 <!-- 자료 (Documents)                                                  -->
 <!-- ================================================================ -->
 <div class="screen" id="screen-docs">
+  <!-- 자료 페이지 탭 -->
+  <div class="page-header">
+    <h1>자료</h1>
+    <p>업로드된 문서와 자료를 관리합니다</p>
+  </div>
+  <div class="tabs" id="docs-top-tabs">
+    <div class="tab active" onclick="showDocsTopTab('docs-tab-list')">자료</div>
+    <div class="tab" onclick="showDocsTopTab('docs-tab-templates')">문서 양식</div>
+  </div>
+
+  <div class="docs-top-panel active" id="docs-tab-list">
   <div class="sub-screen active" id="docs-list">
-    <div class="page-header">
-      <h1>자료</h1>
-      <p>업로드된 문서의 파싱, 청킹, 그래프 연결 상태를 관리합니다</p>
-    </div>
     <div class="filter-bar">
       <div class="search-box">
         <span style="color:#555;">&#128269;</span>
@@ -1134,6 +1174,128 @@
       </div>
     </div>
   </div>
+  </div><!-- end docs-tab-list -->
+
+  <!-- 문서 탭: 문서 양식별 자료 열람 -->
+  <div class="docs-top-panel" id="docs-tab-templates">
+    <div class="flex-row" style="height: calc(100vh - 260px);">
+      <!-- Left: 양식 목록 -->
+      <div style="width:260px;overflow-y:auto;border-right:1px solid #2a2d3a;padding-right:12px;flex-shrink:0;">
+        <div style="margin-bottom:10px;">
+          <span style="font-size:12px;font-weight:600;color:#ccc;">문서 양식</span>
+        </div>
+        <div style="margin-bottom:8px;">
+          <select class="form-select" style="width:100%;">
+            <option selected>전체 유형</option>
+            <option>파일</option>
+            <option>웹링크</option>
+          </select>
+        </div>
+
+        <div class="chunk selected" id="utpl-0" onclick="selectUserTemplate(0)" style="border-left:3px solid #7c8aff;padding:10px 12px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128196;</span>
+            <div class="chunk-title">장비매뉴얼</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span style="font-size:9px;color:#666;">파일 · 7건</span>
+          </div>
+        </div>
+        <div class="chunk" id="utpl-1" onclick="selectUserTemplate(1)" style="padding:10px 12px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128196;</span>
+            <div class="chunk-title">SOP</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span style="font-size:9px;color:#666;">파일 · 4건</span>
+          </div>
+        </div>
+        <div class="chunk" id="utpl-2" onclick="selectUserTemplate(2)" style="padding:10px 12px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128196;</span>
+            <div class="chunk-title">배치기록</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span style="font-size:9px;color:#666;">파일 · 3건</span>
+          </div>
+        </div>
+        <div class="chunk" id="utpl-3" onclick="selectUserTemplate(3)" style="padding:10px 12px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128279;</span>
+            <div class="chunk-title">제조공정 위키</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span style="font-size:9px;color:#666;">웹링크 · 2건</span>
+          </div>
+        </div>
+        <div class="chunk" id="utpl-4" onclick="selectUserTemplate(4)" style="padding:10px 12px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:11px;">&#128196;</span>
+            <div class="chunk-title">검사기준서</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span style="font-size:9px;color:#666;">파일 · 2건</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: 선택된 양식의 자료 목록 + 미리보기 -->
+      <div class="flex-1" style="overflow-y:auto;padding-left:16px;min-width:0;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <span style="font-size:16px;font-weight:600;color:#fff;" id="utpl-title">장비매뉴얼</span>
+          <span class="tag" style="font-size:10px;" id="utpl-type-badge">파일</span>
+        </div>
+
+        <div class="grid-2">
+          <!-- 자료 목록 -->
+          <div>
+            <div class="card">
+              <div class="card-header">
+                포함된 자료
+                <span style="flex:1;"></span>
+                <span class="badge badge-info" id="utpl-count">7건</span>
+              </div>
+              <div class="card-body np">
+                <table class="data-table" id="utpl-table">
+                  <thead><tr><th>유형</th><th>자료명</th><th>크기</th><th>상태</th></tr></thead>
+                  <tbody>
+                    <tr class="row-link"><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_프린터_v2.pdf</td><td>48p</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr class="row-link"><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_롤러_v1.pdf</td><td>32p</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr class="row-link"><td><span class="tag">파일</span></td><td style="font-weight:500;">공정절차_가이드.md</td><td>12KB</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr class="row-link"><td><span class="tag">파일</span></td><td style="font-weight:500;">장비점검_체크리스트.txt</td><td>4KB</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr class="row-link"><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_건조기_v3.pdf</td><td>24p</td><td><span class="badge badge-active">완료</span></td></tr>
+                    <tr class="row-link"><td><span class="tag">파일</span></td><td style="font-weight:500;">장비매뉴얼_코터_v1.pdf</td><td>18p</td><td><span class="badge badge-warn">검수 중</span></td></tr>
+                    <tr class="row-link"><td><span class="tag tag-blue">웹링크</span></td><td style="font-weight:500;">wiki.factory.co.kr/printer-manual</td><td style="font-size:10px;color:#888;">12개 섹션</td><td><span class="badge badge-active">완료</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 미리보기 -->
+          <div>
+            <div class="card" style="height:100%;">
+              <div class="card-header">
+                문서 미리보기
+                <span class="badge badge-neutral" style="font-size:9px;margin-left:6px;">PDF</span>
+                <span style="flex:1;"></span>
+                <span style="font-size:10px;color:#666;">페이지 1 / 48</span>
+              </div>
+              <div class="card-body" style="background:#2a2d3a;padding:16px;display:flex;justify-content:center;">
+                <div style="background:#fff;border-radius:4px;width:100%;max-width:500px;padding:40px 32px;color:#222;font-size:12px;line-height:1.8;">
+                  <div style="text-align:center;font-size:9px;color:#999;margin-bottom:16px;">디자인(7) 12페이지</div>
+                  <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;color:#111;">1. 서론: 개요</h3>
+                  <p style="color:#333;">본 매뉴얼은 인쇄 장비의 운용 및 유지보수를 위한 표준 절차를 기술한다.</p>
+                  <h4 style="font-size:12px;margin-top:16px;color:#222;">1.1 목표 및 범위</h4>
+                  <p style="color:#333;">장비의 안전한 운용과 효율적 유지보수를 통해 생산성 향상을 목표로 한다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end docs-tab-templates -->
 </div>
 
 <!-- 자료 screen removed — content moved to pipeline tab -->
@@ -2948,6 +3110,97 @@ function addCitation(response, context) {
   </div>
 </div>
 
+<!-- ================================================================ -->
+<!-- 에이전트 스토어 (Agent Store - GPTs style)                        -->
+<!-- ================================================================ -->
+<div class="screen" id="screen-agent-store">
+  <div class="page-header">
+    <h1>에이전트</h1>
+    <p>업무에 맞는 AI 어시스턴트를 선택하여 대화를 시작하세요</p>
+  </div>
+
+  <div class="agent-store-search">
+    <input type="text" placeholder="어떤 도움이 필요하신가요? 에이전트를 검색해 보세요...">
+  </div>
+
+  <div class="agent-store-categories">
+    <div class="agent-store-cat active">전체</div>
+    <div class="agent-store-cat">품질관리</div>
+    <div class="agent-store-cat">안전</div>
+    <div class="agent-store-cat">설비</div>
+    <div class="agent-store-cat">문서</div>
+  </div>
+
+  <div style="font-size:11px;color:#666;margin-bottom:12px;">추천</div>
+  <div class="agent-store-grid" style="margin-bottom:28px;">
+    <!-- 메인 에이전트 (Featured) -->
+    <div class="agent-store-card agent-store-featured" onclick="selectAgentAndChat(0)">
+      <div class="asc-top">
+        <div class="asc-icon" style="background:linear-gradient(135deg,#7c8aff,#5a6acc);color:#fff;">Ax</div>
+        <div>
+          <div class="asc-name">AX Flow 어시스턴트</div>
+          <div class="asc-by">AX Flow 기본 제공</div>
+        </div>
+      </div>
+      <div class="asc-desc">공장 운영에 관한 모든 질문에 답변합니다. 등록된 문서를 바탕으로 정확한 정보를 찾아드립니다.</div>
+      <div class="asc-tags">
+        <span class="asc-tag">종합 질의응답</span>
+        <span class="asc-tag">문서 검색</span>
+        <span class="asc-tag">지식 탐색</span>
+      </div>
+      <div class="asc-footer">
+        <div></div>
+        <button class="asc-btn">대화 시작</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#666;margin-bottom:12px;">전문 에이전트</div>
+  <div class="agent-store-grid">
+    <!-- 품질전문가 -->
+    <div class="agent-store-card" onclick="selectAgentAndChat(1)">
+      <div class="asc-top">
+        <div class="asc-icon" style="background:#1a2a3a;color:#60a5fa;">Q</div>
+        <div>
+          <div class="asc-name">품질 전문가</div>
+          <div class="asc-by">품질관리팀</div>
+        </div>
+      </div>
+      <div class="asc-desc">품질 기준, 검사 절차, 불량 원인 분석 등 품질 관련 질문에 전문적으로 답변합니다.</div>
+      <div class="asc-tags">
+        <span class="asc-tag">품질 기준</span>
+        <span class="asc-tag">불량 분석</span>
+        <span class="asc-tag">검사 절차</span>
+      </div>
+      <div class="asc-footer">
+        <div></div>
+        <button class="asc-btn">대화 시작</button>
+      </div>
+    </div>
+
+    <!-- 안전관리 -->
+    <div class="agent-store-card" onclick="selectAgentAndChat(2)">
+      <div class="asc-top">
+        <div class="asc-icon" style="background:#1a3a2a;color:#4ade80;">S</div>
+        <div>
+          <div class="asc-name">안전 관리</div>
+          <div class="asc-by">안전환경팀</div>
+        </div>
+      </div>
+      <div class="asc-desc">안전 수칙, 사고 대응 매뉴얼, 위험 요소 확인 등 작업 안전에 관한 모든 것을 안내합니다.</div>
+      <div class="asc-tags">
+        <span class="asc-tag">안전 수칙</span>
+        <span class="asc-tag">사고 대응</span>
+        <span class="asc-tag">위험성 평가</span>
+      </div>
+      <div class="asc-footer">
+        <div></div>
+        <button class="asc-btn">대화 시작</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   </div><!-- end main-content -->
 </div><!-- end main-wrap -->
 
@@ -2968,6 +3221,7 @@ const screenMap = {
   'docs': ['라이브러리', '자료'],
   'database': ['라이브러리', '데이터베이스'],
   'graph': ['라이브러리', '지식그래프'],
+  'agent-store': ['에이전트'],
   'settings': ['설정', '관리 및 설정'],
   'pipeline': ['설정', '파이프라인'],
   'ops': ['설정', '운영 모니터링'],
@@ -3040,7 +3294,7 @@ function showScreen(id) {
   document.getElementById('screen-' + id).classList.add('active');
   // Reset sub-screens for docs
   if (id === 'docs') {
-    showDocList();
+    showDocsTopTab('docs-tab-list');
   }
   // Update nav active
   document.querySelectorAll('#sidebar .nav-item').forEach(i => i.classList.remove('active'));
@@ -3275,6 +3529,55 @@ document.querySelectorAll('.tabs').forEach(tabBar => {
         this.classList.add('active');
       });
     }
+  });
+});
+
+// ===== Docs Top Tab Switching =====
+function showDocsTopTab(tabId) {
+  document.querySelectorAll('#screen-docs > .docs-top-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  const tabBar = document.getElementById('docs-top-tabs');
+  if (tabBar) {
+    tabBar.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tabBar.querySelectorAll('.tab').forEach(t => {
+      const oc = t.getAttribute('onclick');
+      if (oc && oc.includes(tabId)) t.classList.add('active');
+    });
+  }
+  // Reset sub-screens when going back to list tab
+  if (tabId === 'docs-tab-list') {
+    showDocList();
+  }
+}
+
+// ===== User Template Selection =====
+function selectUserTemplate(idx) {
+  document.querySelectorAll('#docs-tab-templates .chunk').forEach(c => {
+    c.classList.remove('selected');
+    c.style.borderLeft = '';
+  });
+  const el = document.getElementById('utpl-' + idx);
+  if (el) { el.classList.add('selected'); el.style.borderLeft = '3px solid #7c8aff'; }
+}
+
+// ===== Agent Store: Select Agent & Navigate to Chat =====
+function selectAgentAndChat(agentIndex) {
+  // agentIndex: 0=메인(품질전문가 default), 1=품질전문가, 2=안전관리
+  const chatSelect = document.querySelector('#screen-chat .card-header select');
+  if (chatSelect) {
+    // 0: 메인 에이전트 → 첫번째 옵션(품질전문가) 유지
+    // 1: 품질전문가, 2: 안전관리
+    const optionMap = { 0: 0, 1: 0, 2: 1 };
+    chatSelect.selectedIndex = optionMap[agentIndex] !== undefined ? optionMap[agentIndex] : 0;
+  }
+  showScreen('chat');
+}
+
+// ===== Agent Store Category Filter =====
+document.querySelectorAll('.agent-store-cat').forEach(cat => {
+  cat.addEventListener('click', function() {
+    this.parentElement.querySelectorAll('.agent-store-cat').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
   });
 });
 </script>
