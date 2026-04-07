@@ -514,13 +514,6 @@
               <div style="font-size:11px;color:#aab;line-height:1.6;">답변이 도움이 되었나요? 피드백을 남겨주시면 서비스 개선에 도움이 됩니다.</div>
             </div>
           </div>
-          <div style="margin-bottom:20px;padding-left:36px;">
-            <span style="font-size:10px;color:#666;">검색 방식: </span>
-            <span class="tag tag-green">Vector 0.65</span>
-            <span class="tag tag-blue">Graph 0.35</span>
-            <span class="tag">Local Search</span>
-            <span style="font-size:10px;color:#555;margin-left:8px;">응답 1.2초 &middot; 토큰 847</span>
-          </div>
           <div class="msg-user">
             <div class="msg-bubble">잉크 점도가 기준을 벗어나면 어떤 불량이 발생하나요?</div>
           </div>
@@ -553,13 +546,6 @@
             <div style="background:#1a1d27;border:1px solid #2a2d3a;border-radius:8px;padding:10px 14px;display:inline-block;max-width:70%;">
               <div style="font-size:11px;color:#aab;line-height:1.6;">답변이 도움이 되었나요? 피드백을 남겨주시면 서비스 개선에 도움이 됩니다.</div>
             </div>
-          </div>
-          <div style="margin-bottom:20px;padding-left:36px;">
-            <span style="font-size:10px;color:#666;">검색 방식: </span>
-            <span class="tag tag-green">Vector 0.55</span>
-            <span class="tag tag-blue">Graph 0.45</span>
-            <span class="tag">Local Search</span>
-            <span style="font-size:10px;color:#555;margin-left:8px;">응답 1.8초 &middot; 토큰 1,243</span>
           </div>
         </div>
 
@@ -2081,7 +2067,7 @@
             <div class="toggle-row"><span class="toggle-label">OCR 자동 실행</span><div class="toggle on"></div></div>
             <div class="toggle-row"><span class="toggle-label">표/이미지 추출</span><div class="toggle on"></div></div>
             <div class="toggle-row"><span class="toggle-label">메타데이터 자동 태깅</span><div class="toggle on"></div></div>
-            <div class="form-group" style="margin-top:8px;"><div class="form-label">OCR 엔진</div><select class="form-select"><option selected>Tesseract + GPT-4V</option><option>Tesseract Only</option></select></div>
+            <div class="form-group" style="margin-top:8px;"><div class="form-label">OCR 엔진</div><select class="form-select"><option selected>Docling</option><option>MinerU</option></select></div>
           </div>
         </div>
       </div>
@@ -2101,10 +2087,10 @@
         <div class="card-header">청킹 오류 로그</div>
         <div class="card-body np">
           <table class="data-table">
-            <thead><tr><th>문서</th><th>청크 ID</th><th>이슈</th><th>상태</th></tr></thead>
+            <thead><tr><th>문서</th><th>청크 ID</th><th>이슈</th><th>조치</th></tr></thead>
             <tbody>
-              <tr><td style="font-weight:500;">SOP_인쇄공정_v3</td><td>#C-142</td><td style="color:#fbbf24;font-size:10px;">청크 과대 (512 tokens)</td><td><span class="badge badge-warn">검토</span></td></tr>
-              <tr><td style="font-weight:500;">품질보고서_2025Q4</td><td>#C-089</td><td style="color:#fbbf24;font-size:10px;">표 분할 오류</td><td><span class="badge badge-warn">검토</span></td></tr>
+              <tr><td style="font-weight:500;">SOP_인쇄공정_v3</td><td>#C-142</td><td style="color:#fbbf24;font-size:10px;">청크 과대 (512 tokens)</td><td><button class="btn btn-outline btn-sm">재시도</button> <button class="btn btn-ghost btn-sm">무시</button></td></tr>
+              <tr><td style="font-weight:500;">품질보고서_2025Q4</td><td>#C-089</td><td style="color:#fbbf24;font-size:10px;">표 분할 오류</td><td><button class="btn btn-outline btn-sm">재시도</button> <button class="btn btn-ghost btn-sm">무시</button></td></tr>
             </tbody>
           </table>
         </div>
@@ -2112,7 +2098,7 @@
       <div class="card">
         <div class="card-header">청킹 설정</div>
         <div class="card-body">
-          <div class="form-group"><div class="form-label">청킹 방식</div><select class="form-select"><option selected>Semantic Chunking</option><option>Fixed Size</option><option>Recursive Split</option></select></div>
+          <div class="form-group"><div class="form-label">청킹 방식</div><select class="form-select"><option selected>Semantic Chunking</option><option>Fixed Size</option></select></div>
           <div class="slider-row"><span class="slider-label">Max Tokens</span><input type="range" class="slider" min="100" max="500" value="256"><span class="slider-val">256</span></div>
           <div class="slider-row"><span class="slider-label">Overlap</span><input type="range" class="slider" min="0" max="50" value="15"><span class="slider-val">15%</span></div>
           <div class="toggle-row"><span class="toggle-label">표 청크 보존</span><div class="toggle on"></div></div>
