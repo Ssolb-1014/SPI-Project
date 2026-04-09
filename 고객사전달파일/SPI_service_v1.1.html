@@ -188,6 +188,20 @@
   .chunk-title { font-size: 11px; font-weight: 500; color: #ddd; margin: 3px 0 2px; }
   .chunk-text { font-size: 10px; color: #888; line-height: 1.5; }
 
+  /* Chunk manual edit */
+  .chunk.merge-target { border-color: #f59e0b; background: #2a2210; }
+  .chunk.merge-target:hover { border-color: #fbbf24; }
+  .chunk .chunk-check { width: 14px; height: 14px; accent-color: #7c8aff; cursor: pointer; flex-shrink: 0; }
+  .chunk-toolbar { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #2a2d3a; margin-bottom: 10px; }
+  .chunk-toolbar .btn.active { background: #7c8aff; color: #fff; }
+  .chunk-preview { background: #0d0f17; border: 1px solid #2a2d3a; border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+  .chunk-preview-label { font-size: 10px; color: #7c8aff; font-weight: 600; margin-bottom: 6px; }
+  .chunk-preview-text { font-size: 11px; color: #ccc; line-height: 1.7; }
+  .split-line { border-top: 2px dashed #ef4444; margin: 8px 0; position: relative; cursor: pointer; }
+  .split-line::after { content: 'Split'; position: absolute; top: -9px; right: 0; background: #ef4444; color: #fff; font-size: 9px; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+  .split-line:hover { border-color: #f87171; }
+  .merge-arrow { text-align: center; color: #f59e0b; font-size: 14px; margin: -2px 0; }
+
   /* Graph canvas */
   .graph-canvas { background: #0d0f17; border-radius: 8px; border: 1px solid #2a2d3a; position: relative; overflow: hidden; min-height: 400px; }
   .graph-node { position: absolute; background: #1a1d27; border: 2px solid #3a3d5a; border-radius: 8px; padding: 8px 12px; cursor: grab; font-size: 11px; z-index: 2; transition: border-color 0.15s; }
@@ -2103,6 +2117,124 @@
           <div class="toggle-row"><span class="toggle-label">표 청크 보존</span><div class="toggle on"></div></div>
           <div class="toggle-row"><span class="toggle-label">이미지 캡션 포함</span><div class="toggle on"></div></div>
           <div class="btn-group" style="margin-top:8px;"><button class="btn btn-primary btn-sm">설정 저장</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 청크 수동 조정 (P-02) -->
+    <div class="card" style="margin-top:16px;">
+      <div class="card-header">청크 수동 조정<span style="flex:1;"></span><span class="badge badge-info">P-02</span></div>
+      <div class="card-body np">
+        <div class="split-view" style="min-height:420px;">
+          <!-- 좌측: 청크 목록 -->
+          <div class="split-panel">
+            <div class="split-panel-label">청크 목록</div>
+            <div class="form-group" style="margin-bottom:8px;">
+              <select class="form-select">
+                <option selected>장비매뉴얼_프린터_v2.pdf (42 청크)</option>
+                <option>SOP_인쇄공정_v3.docx (28 청크)</option>
+                <option>품질보고서_2025Q4.pdf (19 청크)</option>
+              </select>
+            </div>
+            <div style="font-size:10px;color:#888;margin-bottom:8px;">2개 선택됨 &middot; <a href="#" style="color:#7c8aff;text-decoration:none;">전체 해제</a></div>
+
+            <div class="chunk" style="display:flex;align-items:flex-start;gap:8px;">
+              <input type="checkbox" class="chunk-check">
+              <div style="flex:1;">
+                <div class="chunk-meta">청크 #7 &middot; 198 tokens</div>
+                <div class="chunk-title">3.1 입고 검사</div>
+                <div class="chunk-text">원자재 입고 시 다음 기준에 의거하여 품질 검사를 수행해야 하며...</div>
+              </div>
+            </div>
+
+            <div class="chunk merge-target" style="display:flex;align-items:flex-start;gap:8px;">
+              <input type="checkbox" class="chunk-check" checked>
+              <div style="flex:1;">
+                <div class="chunk-meta">청크 #8 &middot; 87 tokens <span class="tag tag-red" style="margin-left:4px;">문맥 단절</span></div>
+                <div class="chunk-title">3.2 공정 투입</div>
+                <div class="chunk-text">인쇄 공정에 투입되는 원자재는 아래의 절차에 따라...</div>
+              </div>
+            </div>
+
+            <div class="merge-arrow">&darr; 병합 &darr;</div>
+
+            <div class="chunk merge-target" style="display:flex;align-items:flex-start;gap:8px;">
+              <input type="checkbox" class="chunk-check" checked>
+              <div style="flex:1;">
+                <div class="chunk-meta">청크 #9 &middot; 62 tokens <span class="tag tag-red" style="margin-left:4px;">문맥 단절</span></div>
+                <div class="chunk-title">3.2 공정 투입 (계속)</div>
+                <div class="chunk-text">...점도 측정 후 기준치(25&plusmn;3 cP) 이내일 경우 투입을 승인한다.</div>
+              </div>
+            </div>
+
+            <div class="chunk" style="display:flex;align-items:flex-start;gap:8px;">
+              <input type="checkbox" class="chunk-check">
+              <div style="flex:1;">
+                <div class="chunk-meta">청크 #10 &middot; 512 tokens <span class="tag tag-yellow" style="margin-left:4px;">과대</span></div>
+                <div class="chunk-title">4.1 정기 점검 절차</div>
+                <div class="chunk-text">장비의 안정적 운용을 위해 다음과 같은 정기 점검을 시행한다...</div>
+              </div>
+            </div>
+
+            <div class="chunk" style="display:flex;align-items:flex-start;gap:8px;">
+              <input type="checkbox" class="chunk-check">
+              <div style="flex:1;">
+                <div class="chunk-meta">청크 #11 &middot; 201 tokens</div>
+                <div class="chunk-title">4.2 소모품 교체</div>
+                <div class="chunk-text">소모품 교체 주기는 제조사 권장 기준을 따르며...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 우측: 조정 작업 영역 -->
+          <div class="split-panel">
+            <div class="split-panel-label">조정 작업</div>
+            <div class="chunk-toolbar">
+              <button class="btn btn-outline btn-sm active" style="background:#f59e0b;color:#fff;border-color:#f59e0b;">&#x2194; 병합</button>
+              <button class="btn btn-outline btn-sm">&#x2702; 분할</button>
+              <button class="btn btn-ghost btn-sm">&#x21A9; 되돌리기</button>
+              <span style="flex:1;"></span>
+              <span style="font-size:10px;color:#888;">모드: <strong style="color:#f59e0b;">병합</strong></span>
+            </div>
+
+            <!-- 병합 미리보기 -->
+            <div class="chunk-preview">
+              <div class="chunk-preview-label">병합 미리보기 &mdash; 청크 #8 + #9 &rarr; 149 tokens</div>
+              <div class="chunk-preview-text">
+                <span style="color:#ddd;">인쇄 공정에 투입되는 원자재는 아래의 절차에 따라</span>
+                <span style="background:#f59e0b22;border-bottom:1px dashed #f59e0b;padding:0 2px;"> [병합 지점] </span>
+                <span style="color:#ddd;">점도 측정 후 기준치(25&plusmn;3 cP) 이내일 경우 투입을 승인한다.</span>
+              </div>
+            </div>
+            <div class="btn-group" style="margin-bottom:14px;">
+              <button class="btn btn-primary btn-sm" style="background:#f59e0b;border:none;">병합 확정</button>
+              <button class="btn btn-ghost btn-sm">취소</button>
+            </div>
+
+            <!-- 분할 미리보기 (비활성 상태 예시) -->
+            <div class="chunk-preview" style="opacity:0.45;">
+              <div class="chunk-preview-label">분할 미리보기 &mdash; 청크 #10 (512 tokens)</div>
+              <div class="chunk-preview-text">
+                <span style="color:#999;">장비의 안정적 운용을 위해 다음과 같은 정기 점검을 시행한다. 1) 일일 점검: 가동 전 외관 확인, 오일 잔량... 2) 주간 점검: 벨트 장력 측정, 롤러 마모도 확인...</span>
+                <div class="split-line"></div>
+                <span style="color:#999;">3) 월간 점검: 전장 부품 절연 저항 측정... 점검 결과는 설비 이력 카드에 기록하고, 이상 발견 시 즉시 보전팀에 통보한다.</span>
+              </div>
+              <div style="font-size:10px;color:#888;margin-top:6px;">&#x2191; 분할 시: 청크 A (약 280 tokens) + 청크 B (약 232 tokens)</div>
+            </div>
+
+            <!-- 조정 이력 -->
+            <div style="margin-top:14px;">
+              <div style="font-size:10px;font-weight:600;color:#888;margin-bottom:6px;">최근 조정 이력</div>
+              <table class="data-table" style="font-size:10px;">
+                <thead><tr><th>일시</th><th>유형</th><th>대상</th><th>작업자</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td style="color:#888;">04-08 15:30</td><td><span class="tag tag-yellow">병합</span></td><td>#3 + #4 &rarr; #3</td><td>홍길동</td><td><button class="btn btn-ghost btn-sm">롤백</button></td></tr>
+                  <tr><td style="color:#888;">04-07 11:20</td><td><span class="tag tag-blue">분할</span></td><td>#15 &rarr; #15, #15-1</td><td>김철수</td><td><button class="btn btn-ghost btn-sm">롤백</button></td></tr>
+                  <tr><td style="color:#888;">04-05 09:45</td><td><span class="tag tag-yellow">병합</span></td><td>#21 + #22 + #23 &rarr; #21</td><td>홍길동</td><td><button class="btn btn-ghost btn-sm">롤백</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
