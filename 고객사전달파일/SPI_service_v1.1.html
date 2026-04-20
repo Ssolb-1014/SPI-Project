@@ -406,6 +406,9 @@
       <span class="nav-icon">&#11044;</span>
       <span class="nav-label">지식그래프</span>
     </div>
+  </div>
+
+  <div class="nav-group user-only">
     <div class="nav-item" onclick="showScreen('agent-store')">
       <span class="nav-icon">&#129302;</span>
       <span class="nav-label">에이전트</span>
@@ -422,35 +425,35 @@
     </div>
     <div class="nav-item" onclick="showScreen('rbac-user')">
       <span class="nav-icon">&#128274;</span>
-      <span class="nav-label">권한/RBAC</span>
+      <span class="nav-label">권한관리</span>
     </div>
   </div>
 
   <div class="sidebar-divider admin-only"></div>
 
   <div class="nav-group admin-only">
-    <div class="nav-group-label">설정</div>
-    <div class="nav-item" onclick="showScreen('settings')">
-      <span class="nav-icon">&#127760;</span>
-      <span class="nav-label">관리 및 설정</span>
+    <div class="nav-group-label">관리 및 설정</div>
+    <div class="nav-item" onclick="showScreen('ops')">
+      <span class="nav-icon">&#9881;</span>
+      <span class="nav-label">운영 모니터링</span>
     </div>
     <div class="nav-item" onclick="showScreen('pipeline')">
       <span class="nav-icon">&#128196;</span>
       <span class="nav-label">파이프라인</span>
       <span class="nav-badge alert">2</span>
     </div>
-    <div class="nav-item" onclick="showScreen('ops')">
-      <span class="nav-icon">&#9881;</span>
-      <span class="nav-label">운영 모니터링</span>
-    </div>
     <div class="nav-item" onclick="showScreen('agent')">
       <span class="nav-icon">&#129302;</span>
       <span class="nav-label">에이전트</span>
       <span class="nav-badge">4</span>
     </div>
+    <div class="nav-item" onclick="showScreen('settings')">
+      <span class="nav-icon">&#127760;</span>
+      <span class="nav-label">도메인/MCP 관리</span>
+    </div>
     <div class="nav-item" onclick="showScreen('rbac')">
       <span class="nav-icon">&#128274;</span>
-      <span class="nav-label">권한/RBAC</span>
+      <span class="nav-label">권한관리</span>
       <span class="lock-icon">&#128274;</span>
     </div>
   </div>
@@ -1601,11 +1604,11 @@
 </div>
 
 <!-- ================================================================ -->
-<!-- 관리 및 설정 (admin-only)                                          -->
+<!-- 도메인/MCP 관리 (admin-only)                                          -->
 <!-- ================================================================ -->
 <div class="screen" id="screen-settings">
   <div class="page-header">
-    <h1>관리 및 설정</h1>
+    <h1>도메인/MCP 관리</h1>
     <p>도메인 워크스페이스, MCP 서버, Tool 사용을 관리합니다</p>
   </div>
   <div class="tabs" id="settings-tabs">
@@ -2927,11 +2930,11 @@ function addCitation(response, context) {
 </div>
 
 <!-- ================================================================ -->
-<!-- 권한/RBAC (admin-only)                                             -->
+<!-- 권한관리 (admin-only)                                             -->
 <!-- ================================================================ -->
 <div class="screen" id="screen-rbac">
   <div class="page-header">
-    <h1>&#128274; 권한/RBAC</h1>
+    <h1>&#128274; 권한관리</h1>
     <p>사용자 권한 등급, 문서/그래프 접근 범위, 감사 로그를 관리합니다 <span class="badge badge-warn">L3 이상 접근 가능</span></p>
   </div>
   <div class="tabs" id="rbac-tabs">
@@ -3118,11 +3121,11 @@ function addCitation(response, context) {
 </div>
 
 <!-- ================================================================ -->
-<!-- 권한/RBAC (user — L3까지만 노출)                                    -->
+<!-- 권한관리 (user — L3까지만 노출)                                    -->
 <!-- ================================================================ -->
 <div class="screen" id="screen-rbac-user">
   <div class="page-header">
-    <h1>&#128274; 권한/RBAC</h1>
+    <h1>&#128274; 권한관리</h1>
     <p>사용자 권한 등급, 문서/그래프 접근 범위, 감사 로그를 관리합니다 <span class="badge badge-warn">L3 이하 설정 가능</span></p>
   </div>
   <div class="tabs" id="rbac-user-tabs">
@@ -3339,13 +3342,13 @@ const screenMap = {
   'database': ['라이브러리', '데이터베이스'],
   'graph': ['라이브러리', '지식그래프'],
   'agent-store': ['에이전트'],
-  'settings': ['설정', '관리 및 설정'],
-  'pipeline': ['설정', '파이프라인'],
-  'ops': ['설정', '운영 모니터링'],
-  'agent': ['설정', '에이전트'],
-  'rbac': ['설정', '권한/RBAC'],
+  'settings': ['관리 및 설정', '도메인/MCP 관리'],
+  'pipeline': ['관리 및 설정', '파이프라인'],
+  'ops': ['관리 및 설정', '운영 모니터링'],
+  'agent': ['관리 및 설정', '에이전트'],
+  'rbac': ['관리 및 설정', '권한관리'],
   'dashboard': ['관리', '대시보드'],
-  'rbac-user': ['관리', '권한/RBAC'],
+  'rbac-user': ['관리', '권한관리'],
 };
 
 // ===== Breadcrumb =====
